@@ -10,7 +10,7 @@ class MessageSerializer(serializers.HyperlinkedModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'first_name', 'last_name', 'username', 'password', 'is_active', 'is_superuser')
+        fields = ('id', 'first_name', 'last_name', 'username', 'password', 'is_active', 'is_superuser', 'is_staff')
 
 class PrecioHistoricoProductoSerializer(serializers.ModelSerializer):
     class Meta:
