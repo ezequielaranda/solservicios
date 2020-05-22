@@ -14,7 +14,7 @@ const getProductos = () => api.get(END_POINT_PRODUCTO)
 const getProductoById = (idProducto) => api.get(END_POINT_PRODUCTO + idProducto + '/')
 const getStockProductos = () => api.get(END_POINT_STOCK_PRODUCTOS)
 const getPreciosProductos = () => api.get(END_POINT_PRECIOS_PRODUCTOS)
-const addNewProducto = (formProducto) => api.post(END_POINT_PRODUCTO, formProducto)
+const addProducto = (formProducto) => api.post(END_POINT_PRODUCTO, formProducto)
 const editProducto = (formProducto) => api.put(END_POINT_PRODUCTO + formProducto.id + '/', formProducto)
 const deleteProducto = (productoId) => api.delete(END_POINT_PRODUCTO + productoId + '/')
 
@@ -47,7 +47,7 @@ export {
   getStockProductos,
   getTiposProducto,
   getFamiliasProducto,
-  addNewProducto,
+  addProducto,
   getPreciosProductos,
   addPrecioHistoricoProducto,
   getReporteConsumoClientes,

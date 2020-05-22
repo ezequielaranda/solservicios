@@ -5,17 +5,40 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 from rest_framework import routers
-from rest_framework.authtoken import views 
-from rest_framework.authtoken.views import obtain_auth_token 
+from rest_framework.authtoken import views
+from rest_framework.authtoken.views import obtain_auth_token
 
-from .api.views import index_view, MessageViewSet, UserViewSet, ProductoViewSet
+from .api.views import (
+    MessageViewSet, ProductoActivoViewSet, ProductoViewSet,
+    TipoProductoViewSet, UserViewSet, index_view,
+    FamiliaProductoViewSet, ProveedorViewSet, FacturaCompraViewSet,
+    FacturaCompraCreateViewSet, ItemsFacturaViewSet, ItemEntregaClienteViewSet,
+    StockHistoricoProductoViewSet, ProductoStockViewSet, EntregaClienteViewSet,
+    PrecioHistoricoProductoViewSet, ProductoPreciosViewSet,
+    ClienteViewSet, PuntoLimpiezaClienteViewSet, ProductoReporteConsumoViewSet)
 
 router = routers.DefaultRouter()
 router.register('messages', MessageViewSet)
 router.register('productos', ProductoViewSet)
+router.register('productosActivos', ProductoActivoViewSet) 
+router.register('tiposproducto', TipoProductoViewSet)
+router.register('familiasproducto', FamiliaProductoViewSet)
 router.register('usuarios', UserViewSet, basename='User')
+router.register('proveedores', ProveedorViewSet)
+router.register('facturasCompra', FacturaCompraViewSet)
+router.register('facturasCompraCreate', FacturaCompraCreateViewSet)
+router.register('itemsFacturaCompra', ItemsFacturaViewSet)
+router.register('itemEntregaCliente', ItemEntregaClienteViewSet)
+router.register('stockProductos', StockHistoricoProductoViewSet)
+router.register('stockProductosConsulta', ProductoStockViewSet)
+router.register('entregasCliente', EntregaClienteViewSet)
+router.register('preciosHistoricos', PrecioHistoricoProductoViewSet)
+router.register('preciosHistoricosProductos', ProductoPreciosViewSet)
+router.register('clientes', ClienteViewSet)
+router.register('puntosLimpiezaCliente', PuntoLimpiezaClienteViewSet, basename='PuntoLimpiezaCliente')
+router.register('reporteEntregasAClientes', ProductoReporteConsumoViewSet, basename='Producto')
 
 urlpatterns = [
 
@@ -30,5 +53,4 @@ urlpatterns = [
     # http://localhost:8000/api/admin/
     path('api/admin/', admin.site.urls),
 ]
-
 

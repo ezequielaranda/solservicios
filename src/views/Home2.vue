@@ -1,6 +1,6 @@
 <template>
     <b-container class="home2 mt-5">
-    <b-card-group deck v-if='isAuthenticated'>
+    <b-card-group deck v-if='isAuthenticated && !isAdminUser'>
       <b-card header-bg-variant="info" bg-variant="light" text-variant="light" header="Acceso directo Clientes" class="shadow">
         <b-button pill size='sm' variant="outline-secondary" to="/newClienteView" class="shadow mb-2"><b-icon icon="plus"></b-icon>  Nuevo Cliente</b-button>
         <div class="shadow border-top my-3"></div>
@@ -32,23 +32,32 @@
     <div v-if='!isAuthenticated'>
        <auth />
     </div>
+    <div v-if='isAdminUser'>
+       <homeAdmin />
+    </div>
     </b-container>
 
 </template>
 
 <script>
 import auth from '@/views/login/Auth.vue'
+import homeAdmin from '@/views/HomeAdmin.vue'
 
 export default {
   name: 'home2',
   components: {
-    auth
+    auth,
+    homeAdmin
   },
 
   computed: {
     isAuthenticated: function () {
       return this.$store.getters.isAuthenticated
+    },
+    isAdminUser: function () {
+      return this.$store.getters.isAdminUser
     }
+
 
   },
   data () {

@@ -58,13 +58,23 @@ export default {
     onReset (evt) {
       evt.preventDefault()
     },
+    logout () {
+      this.$store.dispatch('AUTH_LOGOUT')
+    },
 
     login () {
       this.$store.dispatch('AUTH_REQUEST', this.credentials)
-        .then(() => { this.$router.push('/') })
-        // eslint-disable-next-line handle-callback-err
-        // eslint-disable-next-line no-unused-vars
+        .then(() => { 
+              this.$store.dispatch('GET_PROVEEDORES')
+              this.$store.dispatch('GET_CLIENTES')
+              this.$store.dispatch('GET_PUNTOS_CLIENTES')
+              this.$store.dispatch('GET_TIPO_PRODUCTOS')
+              this.$store.dispatch('GET_FAMILIAS_PRODUCTO')
+              this.$store.dispatch('GET_PRODUCTOS')
+              this.$router.push('/') 
+            })
         .catch(error => {
+          this.logout()
           localStorage.removeItem('user-token')
           swal({
             type: 'warning',

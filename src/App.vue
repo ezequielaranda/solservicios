@@ -1,19 +1,9 @@
-<!--template>
-  <div id="app">
-    <h1>Django VueJs Template</h1>
-    <div id="nav">
-     <router-link :to="{ name: 'home' }">Vue</router-link> |
-     <router-link :to="{ name: 'messages' }">Django Rest</router-link>
-    </div>
-    <router-view/>
-  </div>
-</template-->
 <template>
     <b-container id="app" fluid>
      <b-row>
         <navigation />
-        <router-link :to="{ name: 'home' }">Vue</router-link> |
-        <router-link :to="{ name: 'messages' }">Django Rest</router-link>
+        <!--router-link :to="{ name: 'home' }">Vue</router-link> |
+        <router-link :to="{ name: 'messages' }">Django Rest</router-link-->
      </b-row>
     <b-row class="main-container">
       <router-view  />
@@ -27,8 +17,6 @@
 
 <script>
 import navigation from '@/components/navigation/navigation.vue'
-// import httpClient from '@/services/api/httpClient.js'
-
 export default {
 
   components: {
@@ -37,23 +25,17 @@ export default {
   name: 'app',
 
   data () {
-    return {
-
-    }
+    return {}
   },
 
   created: function () {
-    // if (!this.$store.getters.isAuthenticated || this.$store.getters.authStatus === '') { this.logout() }
-    // httpClient.interceptors.response.use(undefined, function (err) {
-    //   return new Promise(function (resolve, reject) {
-    //     if (err.status === 403 && err.config && !err.config.__isRetryRequest) { this.logout() }
-    //     throw err
-    //   })
-    // })
+    if (!this.$store.getters.isAuthenticated || this.$store.getters.authStatus === '') { 
+      this.logout()
+    } 
   },
 
   methods: {
-    // logout () { this.$store.dispatch('AUTH_LOGOUT').then(() => this.$router.push('/auth')) }
+    logout () { this.$store.dispatch('AUTH_LOGOUT').then(() => this.$router.push('/auth')) }
   }
 }
 

@@ -8,7 +8,7 @@
           </b-breadcrumb>
       <b-row align-h="between">
         <b-col>
-          <b-button pill variant="outline-success" to="/newProducto" size="sm" class="shadow mb-2">
+          <b-button pill variant="outline-success" to="/newEditProductoView" size="sm" class="shadow mb-2">
             <b-icon icon="plus"></b-icon>Nuevo Producto
           </b-button>
         </b-col>
@@ -43,7 +43,7 @@
 
       <b-table id="tablaProductos"
                show-empty=true
-               empty-text="No se han encontrado Productos cargados."
+               empty-text="No se han encontrado elementos."
                small
                hover
                head-row-variant="secondary"
@@ -56,7 +56,7 @@
                >
         <template v-slot:cell(action)="row" >
          <b-row class="justify-content-md-center">
-            <b-button pill size="sm" variant="info" class="mr-2" :to="{ name:'editProductoView', params: {productoId: row.item.id} }">
+            <b-button pill size="sm" variant="info" class="mr-2" :to="{ name:'newEditProductoView', params: {productoId: row.item.id} }">
                     <b-icon icon="pencil"></b-icon>Editar</b-button>
           <b-button pill size="sm" variant="outline-danger">
             <b-icon icon="trash"></b-icon>
@@ -64,17 +64,16 @@
          </b-row>
         </template>
         <template v-slot:table-busy>
-        <div class="text-center text-danger my-2">
-          <b-spinner class="align-middle"></b-spinner>
-          <strong>Cargando...</strong>
-        </div>
-      </template>
+          <div class="text-center text-danger my-2">
+            <b-spinner class="align-middle"></b-spinner>
+            <strong>Cargando...</strong>
+          </div>
+        </template>
       </b-table>
     </b-container>
 </template>
 
 <script>
-import { getProductos } from '@/services/productos.js'
 import JsPDF from 'jspdf'
 import 'jspdf-autotable'
 export default {
@@ -82,8 +81,8 @@ export default {
   data () {
     return {
       isBusy: false,
-      listaProductos: [],
-      rows: 0,
+      // listaProductos: [],
+      // rows: 0,
       perPage: 8,
       currentPage: 1,
       fields: [
@@ -97,20 +96,19 @@ export default {
     }
   },
 
-  mounted () { this.fetchData() },
+  created () { 
+    this.isBusy = true
+    // this.$store.dispatch('GET_PRODUCTOS')
+    this.isBusy = false
+  },
+  mounted () { },
+  
+  computed: {
+    rows () { return this.listaProductos.length }, 
+    listaProductos () { return this.$store.getters.PRODUCTOS }
+  },
 
   methods: {
-    fetchData () {
-      this.isBusy = true
-      getProductos()
-        .then(response => {
-          this.listaProductos = response.data
-          this.rows = this.listaProductos.length
-          this.isBusy = false
-        })
-        // eslint-disable-next-line no-console
-        .catch(error => console.log(error))
-    },
     printReporte () {
       var doc = new JsPDF('p', 'pt')
       doc.setFontSize(10)

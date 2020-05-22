@@ -1,16 +1,10 @@
 from django.db import models
 from rest_framework import serializers
-
+from django.utils import timezone
 
 class Message(models.Model):
     subject = models.CharField(max_length=200)
     body = models.TextField()
-
-
-
-
-from django.db import models
-from django.utils import timezone
 
 class Cliente(models.Model):
     nombre_completo = models.CharField(max_length=50)
@@ -67,9 +61,9 @@ class Accion(models.Model):
 class Producto(models.Model):
     nombre_completo = models.CharField(max_length=50)
     estado = models.CharField(max_length=8)
-    proveedor = models.ForeignKey(Proveedor, related_name='productos', on_delete=models.CASCADE, null=False)
-    tipoProducto = models.ForeignKey(TipoProducto, on_delete=models.DO_NOTHING)
-    familiaProducto = models.ForeignKey(FamiliaProducto, on_delete=models.DO_NOTHING)
+    proveedor = models.ForeignKey(Proveedor, related_name='productos', on_delete=models.SET_NULL, null=True)
+    tipoProducto = models.ForeignKey(TipoProducto, on_delete=models.SET_NULL, null=True)
+    familiaProducto = models.ForeignKey(FamiliaProducto, on_delete=models.SET_NULL, null=True)
     factor_multiplicacion = models.FloatField(default=1)
 
     def __str__(self):
@@ -91,13 +85,13 @@ class Usuario(models.Model):
 class EntregaCliente(models.Model):
     fecha_entrega = models.DateField()
     fecha_alta_entrega = models.DateField(auto_now=True)
-    punto_limpieza_cliente = models.ForeignKey(PuntoLimpiezaCliente, on_delete=models.CASCADE)
+    punto_limpieza_cliente = models.ForeignKey(PuntoLimpiezaCliente, on_delete=models.PROTECT)
     usuario_alta = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
 
 class ItemEntregaCliente(models.Model):
     entregaCliente = models.ForeignKey(EntregaCliente, related_name='itemsEntrega', on_delete=models.CASCADE)
     fecha_alta_item_entrega = models.DateField(auto_now=True)
-    producto = models.ForeignKey(Producto, related_name='productosEntrega', on_delete=models.CASCADE)
+    producto = models.ForeignKey(Producto, related_name='productosEntrega', on_delete=models.PROTECT)
     cantidad = models.IntegerField()
     esEntrega = models.BooleanField()
 
@@ -105,8 +99,8 @@ class ItemEntregaCliente(models.Model):
 class FacturaCompra(models.Model):
     fecha_factura_compra = models.DateField()
     fecha_alta_factura = models.DateField()
-    proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
-    usuario_alta = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT)
+    usuario_alta = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True)
     importe_neto_gravado = models.FloatField()
     importe_total = models.FloatField()
     iva27 = models.FloatField()
@@ -117,7 +111,7 @@ class FacturaCompra(models.Model):
 
 class ItemsFactura(models.Model):
     facturaCompra = models.ForeignKey(FacturaCompra, related_name='itemsFactura', on_delete=models.CASCADE)
-    producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
+    producto = models.ForeignKey(Producto, on_delete=models.PROTECT)
     cantidad = models.IntegerField()
     precio_compra = models.FloatField()
     unidad_medida = models.CharField(max_length=10)
@@ -166,7 +160,7 @@ class StockHistoricoProducto(models.Model):
 class PrecioHistoricoProducto(models.Model):
     fecha_inicio = models.DateField()
     importe = models.FloatField()
-    isCurrent = models.BooleanField()
+    #isCurrent = models.BooleanField()
     producto = models.ForeignKey(Producto, related_name='preciosProducto', on_delete=models.CASCADE)
     #itemFactura = models.ForeignKey(ItemsFactura, unique=True, on_delete=models.CASCADE)
     itemFactura = models.OneToOneField(ItemsFactura, on_delete=models.CASCADE, null=True)

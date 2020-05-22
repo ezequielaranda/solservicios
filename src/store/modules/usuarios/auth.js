@@ -40,8 +40,6 @@ const actions = {
       commit(AUTH_REQUEST)
       getAuth(user).then(response => {
         localStorage.setItem('user-token', response.data.token)
-        // console.log(response.data.token)
-        // console.log(localStorage.getItem('user-token'))
         api.defaults.headers.common['Authorization'] = 'Token ' + response.data.token
         commit(AUTH_SUCCESS, response)
         dispatch(USER_REQUEST, user.username)

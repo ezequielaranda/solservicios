@@ -10,7 +10,7 @@
                     <b-dropdown-item to="/productos">Lista de Productos</b-dropdown-item>
                     <b-dropdown-item to="/stockProductos">Stock de Productos</b-dropdown-item>
                     <b-dropdown-item to="/tipoProductos">Lista de Tipos de Productos</b-dropdown-item>
-                    <b-dropdown-item>Lista de Familias de Productos</b-dropdown-item>
+                    <b-dropdown-item to="/familiaProductos">Lista de Familias de Productos</b-dropdown-item>
                     <b-dropdown-divider></b-dropdown-divider>
                     <b-dropdown-item to="/newEntregaProductoView">Alta de Entrega de productos</b-dropdown-item>
                   </b-dropdown>
