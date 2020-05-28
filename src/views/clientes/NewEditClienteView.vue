@@ -80,7 +80,7 @@
                       class="mr-2"
                       :to="{ name:'newEditPuntoLimpiezaClienteView', params: {idPuntoLimpiezaCliente: row.item.id} }">
                       <b-icon icon="pencil"></b-icon>Editar</b-button>
-            <b-button pill size="sm" variant="outline-danger"><b-icon icon="trash"></b-icon>
+            <b-button pill size="sm" variant="outline-danger" @click='deletePuntoCliente(row.item.id)'><b-icon icon="trash"></b-icon>
             Eliminar</b-button>
           </template>
         </b-table>
@@ -157,7 +157,32 @@ export default {
       this.$nextTick(() => {
         this.show = true
       })
-    }
+    },
+
+    deletePuntoCliente (puntoClienteId) {
+      swal('Está seguro de eliminar El Punto de Limpieza del Cliente seleccionado?', {
+        buttons: {
+          cancel: 'Cancelar',
+          catch: {
+            text: 'Aceptar',
+            value: 'catch'
+          }
+        },
+        icon: 'warning'
+      })
+        .then((value) => {
+          switch (value) {
+            case 'catch':
+              this.$store.dispatch('DELETE_PUNTO_CLIENTE', puntoClienteId).then( response => {
+                this.listaPuntosLimpiezaCliente = this.$store.getters.PUNTO_CLIENTE_BY_CLIENTE_ID(this.$route.params.idCliente)
+                swal('Punto de Limpieza de Cliente eliminado exitosamente.', '', 'success')
+              }, error => {
+                swal('El Punto de Limpieza de Cliente seleccionado no puede ser eliminado.', '', 'error')
+              })
+              break
+          }
+        })
+    },
   },
 
     mounted () {
@@ -168,7 +193,6 @@ export default {
     } else {
       this.isEdit = true
       this.listaPuntosLimpiezaCliente = this.$store.getters.PUNTO_CLIENTE_BY_CLIENTE_ID(idCliente)
-      console.log(this.listaPuntosLimpiezaCliente)
       const cliente = this.$store.getters.CLIENTE_BY_ID(idCliente)
       this.form.nombre_completo = cliente.nombre_completo
       this.form.domicilio = cliente.domicilio

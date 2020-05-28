@@ -10,12 +10,15 @@ import Home2 from './views/Home2.vue'
 import HomeAdmin from './views/HomeAdmin.vue'
 import ListaProductosView from './views/productos/producto/ListaProductosView.vue'
 
+import ReporteConsumoClientesView from './views/reportes/ReporteConsumoClientesView.vue'
+
 import ListaClientesView from './views/clientes/ListaClientesView.vue'
 import NewEditClienteView from './views/clientes/NewEditClienteView.vue'
 import NewEditPuntoLimpiezaClienteView from './views/clientes/NewEditPuntoLimpiezaClienteView.vue'
 
-// import NewProductoView from './views/productos/producto/NewProductoView.vue'
+import StockProductosView from './views/productos/producto/StockProductosView.vue'
 import NewEditProductoView from './views/productos/producto/NewEditProductoView.vue'
+import PreciosProductosView from './views/productos/producto/PreciosProductosView.vue'
 
 import ListaTipoProductosView from './views/productos/tipoProducto/ListaTipoProductosView.vue'
 import ListaFamiliaProductosView from './views/productos/familiaProducto/ListaFamiliaProductosView.vue'
@@ -192,6 +195,24 @@ export default new Router({
       name: 'newDevolucionEntregaClienteView',
       component: NewDevolucionEntregaClienteView,
       beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/stockProductos',
+      name: 'StockProductosView',
+      component: StockProductosView,
+      beforeEnter: ifisAdminUser
+    },
+    {
+      path: '/preciosProductos',
+      name: 'PreciosProductosView',
+      component: PreciosProductosView,
+      beforeEnter: ifisAdminUser
+    },
+    {
+      path: '/reporteConsumoClientesView',
+      name: 'ReporteConsumoClientesView',
+      component: ReporteConsumoClientesView,
+      beforeEnter: ifisAdminUser
     },
 
     

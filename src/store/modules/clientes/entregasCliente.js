@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { getEntregasCliente,
   addEntregaCliente,
   addItemEntregaCliente,
@@ -66,7 +67,10 @@ const mutations = {
 }
 
 const getters = {
-ENTREGAS: state => { return state.entregasCliente } 
+  ENTREGAS: state => { return state.entregasCliente },
+  ENTREGAS_LAST_XX_DAYS: (state) => (days) => {
+    return state.entregasCliente.filter(entrega => moment(entrega.fecha_entrega) > moment().subtract(days, 'days'))
+  } 
 }
 
 export default {

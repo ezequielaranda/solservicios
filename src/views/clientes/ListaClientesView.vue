@@ -19,9 +19,9 @@
 
         <b-col align="right">
           <b-button pill variant="outline-secondary" to="/reporteConsumoClientesView" size="sm mr-2" class="shadow mb-2">
-           <b-icon icon="table"></b-icon>Reporte de Entregas</b-button>
+           <b-icon icon="table"></b-icon> Reporte de Entregas</b-button>
           <b-button pill variant="outline-secondary" to="/listaEntregaClienteView" size="sm" class="shadow mb-2">
-           <b-icon icon="table"></b-icon>Entregas a Clientes</b-button>
+           <b-icon icon="table"></b-icon> Entregas a Clientes</b-button>
         </b-col>
       </b-row>
 
@@ -29,7 +29,7 @@
       <b-row align-h="between">
         <b-col>
           <b-button pill size='sm' variant="outline-success" @click="printReporte" class="shadow mb-2">
-          <b-icon icon="bar-chart-fill"></b-icon>Imprimir Lista de Clientes</b-button>
+          <b-icon icon="bar-chart-fill"></b-icon> Imprimir Lista de Clientes</b-button>
         </b-col>
         <b-col>
           <b-pagination v-model="currentPage"
@@ -85,9 +85,9 @@ export default {
       perPage: 8,
       currentPage: 1,
       fields: [
-        { key: 'nombre_completo', label: 'Nombre Completo' },
-        { key: 'domicilio', label: 'Domicilio' },
-        { key: 'action', label: '' }
+        { key: 'nombre_completo', label: 'Nombre Completo', sortable: true, class: 'text-center' },
+        { key: 'domicilio', label: 'Domicilio', class: 'text-center' },
+        { key: 'action', label: '', class: 'text-center' }
       ]
     }
   },

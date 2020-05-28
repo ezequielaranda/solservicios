@@ -14,11 +14,11 @@
         </b-col>
         <b-col align="right">
           <b-button pill variant="outline-secondary" to="/preciosProductos" size="sm" class="shadow mb-2 mr-2">
-          <b-icon icon="table"></b-icon>Precios de Productos</b-button>
+          <b-icon icon="table"></b-icon> Precios de Productos</b-button>
           <b-button pill variant="outline-secondary" to="/stockProductos" size="sm" class="shadow mb-2 mr-2">
-          <b-icon icon="table"></b-icon>Stock de Productos</b-button>
-          <b-button pill variant="outline-secondary" to="/listaEntregaClienteView" size="sm" class="shadow mb-2">
-           <b-icon icon="table"></b-icon>Entregas a Clientes</b-button>
+          <b-icon icon="table"></b-icon> Stock de Productos</b-button>
+          <!--b-button pill variant="outline-secondary" to="/listaEntregaClienteView" size="sm" class="shadow mb-2">
+           <b-icon icon="table"></b-icon> Entregas a Clientes</b-button-->
         </b-col>
       </b-row>
 
@@ -87,7 +87,8 @@ export default {
       currentPage: 1,
       fields: [
         { key: 'nombre_completo', label: 'Nombre Completo', sortable: true },
-        { key: 'estado', label: 'Estado', sortable: false, class: 'text-center' },
+        // { key: 'estado', label: 'Estado', sortable: false, class: 'text-center' },
+        { key: 'descripcion_estado', label: 'Estado', sortable: false, class: 'text-center' },
         { key: 'nombre_proveedor', label: 'Proveedor', sortable: false, class: 'text-center' },
         { key: 'descripcion_tipo_producto', label: 'Tipo', sortable: false, class: 'text-center' },
         { key: 'descripcion_familia_producto', label: 'Familia', sortable: false, class: 'text-center' },

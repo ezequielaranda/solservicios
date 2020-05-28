@@ -167,7 +167,7 @@ export default {
       ],
       // totalRows: 1,
       currentPage: 1,
-      perPage: 8,
+      perPage: 18,
       pageOptions: [5, 10, 15],
       sortBy: '',
       sortDesc: false,
@@ -203,6 +203,7 @@ export default {
 
   created () { 
     this.loading = true,
+    console.log("lanzo el DISPATCH de SET_FACTURASCOMPRA")
     this.$store.dispatch('GET_FACTURASCOMPRA')
     this.loading = false },
 

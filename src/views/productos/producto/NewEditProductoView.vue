@@ -51,6 +51,14 @@
                 Se debe elegir un tipo de producto de la lista.
             </b-form-invalid-feedback>
       </b-form-group>
+      <b-form-group id="input-group-4" label="Estado de Producto:" label-cols-lg="3">
+            <v-select label="descripcion" :reduce="descripcion => descripcion.id" v-model="form.estado" :options="listaEstadosProducto">
+              <div slot="no-options">No se encontraron resultados</div>
+            </v-select>
+            <b-form-invalid-feedback :state="stateEstadoProducto">
+                Se debe elegir un estado de la lista.
+            </b-form-invalid-feedback>
+      </b-form-group>
       <b-form-group id="input-group-1" label="Familia de Producto:" label-cols-lg="3">
             <v-select label="descripcion" :reduce="descripcion => descripcion.id" v-model="form.familiaProducto" :options="listaFamiliasProducto">
               <div slot="no-options">No se encontraron resultados</div>
@@ -99,7 +107,7 @@ export default {
       isEdit: null,
       form: {
         nombre_completo: '',
-        estado: 'OK',
+        estado: null,
         proveedor: null,
         tipoProducto: null,
         familiaProducto: null,
@@ -121,17 +129,20 @@ export default {
     stateNombreCompleto () { return this.form.nombre_completo.length > 4 && this.form.nombre_completo.length < 51 },
     stateProveedor () { return this.form.proveedor != null },
     stateTipoProducto () { return this.form.tipoProducto != null },
+    stateEstadoProducto () { return this.form.estado != null },
     stateFamiliaProducto () { return this.form.familiaProducto != null },
     
     listaTiposProducto () { return this.$store.getters.TIPO_PRODUCTOS },
     listaProveedores () { return this.$store.getters.PROVEEDORES },
-    listaFamiliasProducto () { return this.$store.getters.FAMILIAS_PRODUCTO }
+    listaFamiliasProducto () { return this.$store.getters.FAMILIAS_PRODUCTO },
+    listaEstadosProducto () { return this.$store.getters.ESTADOS_PRODUCTO }
 
   },
 
   methods: {
     onSubmit (evt) {
-      if (this.stateProveedor && this.stateTipoProducto && this.stateFamiliaProducto && this.stateNombreCompleto) {
+      if (this.stateProveedor && this.stateTipoProducto && 
+          this.stateFamiliaProducto && this.stateNombreCompleto && this.stateEstadoProducto) {
         evt.preventDefault()
         if(this.isEdit) {
           this.$store.dispatch('EDIT_PRODUCTO', this.form).then(
@@ -153,7 +164,7 @@ export default {
       evt.preventDefault()
       // Reset our form values
       this.form.nombre_completo = ''
-      this.form.estado = 'OK'
+      this.form.estado = null
       this.form.proveedor = null
       this.form.tipoProducto = null
       this.form.familiaProducto = null
@@ -167,7 +178,7 @@ export default {
 
   mounted () {
     let idProducto = null
-    idProducto = this.$route.params.idProducto
+    idProducto = this.$route.params.productoId
     if(idProducto==null) {
       this.isEdit = false
     } else {

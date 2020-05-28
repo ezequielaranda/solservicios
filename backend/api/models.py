@@ -1,10 +1,19 @@
 from django.db import models
 from rest_framework import serializers
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 class Message(models.Model):
     subject = models.CharField(max_length=200)
     body = models.TextField()
+
+
+class EstadoProducto(models.Model):
+    codigo = models.CharField(max_length=8, unique=True)
+    descripcion = models.CharField(max_length=60)
+
+    def __str__(self):
+        return self.descripcion
 
 class Cliente(models.Model):
     nombre_completo = models.CharField(max_length=50)
@@ -60,7 +69,7 @@ class Accion(models.Model):
 # Definición de la clase PRODUCTO
 class Producto(models.Model):
     nombre_completo = models.CharField(max_length=50)
-    estado = models.CharField(max_length=8)
+    estado = models.ForeignKey(EstadoProducto, on_delete=models.SET_NULL, null=True)
     proveedor = models.ForeignKey(Proveedor, related_name='productos', on_delete=models.SET_NULL, null=True)
     tipoProducto = models.ForeignKey(TipoProducto, on_delete=models.SET_NULL, null=True)
     familiaProducto = models.ForeignKey(FamiliaProducto, on_delete=models.SET_NULL, null=True)
@@ -86,7 +95,7 @@ class EntregaCliente(models.Model):
     fecha_entrega = models.DateField()
     fecha_alta_entrega = models.DateField(auto_now=True)
     punto_limpieza_cliente = models.ForeignKey(PuntoLimpiezaCliente, on_delete=models.PROTECT)
-    usuario_alta = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    usuario_alta = models.ForeignKey(User, on_delete=models.DO_NOTHING)
 
 class ItemEntregaCliente(models.Model):
     entregaCliente = models.ForeignKey(EntregaCliente, related_name='itemsEntrega', on_delete=models.CASCADE)
@@ -100,7 +109,7 @@ class FacturaCompra(models.Model):
     fecha_factura_compra = models.DateField()
     fecha_alta_factura = models.DateField()
     proveedor = models.ForeignKey(Proveedor, on_delete=models.PROTECT)
-    usuario_alta = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True)
+    usuario_alta = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     importe_neto_gravado = models.FloatField()
     importe_total = models.FloatField()
     iva27 = models.FloatField()
@@ -123,7 +132,7 @@ class OrdenCompra(models.Model):
     fecha_orden_compra = models.DateField()
     fecha_alta_orden = models.DateField()
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
-    usuario_alta = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    usuario_alta = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     productos = models.ManyToManyField(
         Producto,
         through='ItemsOrdenCompra',
@@ -170,7 +179,7 @@ class PrecioHistoricoProducto(models.Model):
 # Definición de las acciones realizadas por los usuarios
 class AccionesRealizadasUsuario(models.Model):
     accion = models.ForeignKey(Accion, on_delete=models.DO_NOTHING)
-    usuario = models.ForeignKey(Usuario, on_delete=models.DO_NOTHING)
+    usuario = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     fecha_accion = models.DateField(auto_now=True)
     descripcion = models.CharField(max_length=150)
 

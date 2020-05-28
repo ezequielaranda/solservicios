@@ -171,6 +171,10 @@ export default {
     this.totalRows = this.listaEntregasCliente.length
   },
 
+  created () {
+        this.$store.dispatch('GET_ENTREGAS')
+  },
+
   methods: {
 
     info (item, index, button) {

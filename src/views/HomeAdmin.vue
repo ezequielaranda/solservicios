@@ -17,8 +17,8 @@
                 text-variant="dark" 
                 header="Cantidad de Entregas realizadas en los últimos 10 días" 
                 class="shadow">
-          <b-badge>
-            300
+          <b-badge> {{this.getUltimasEntregas(10)}}
+            
           </b-badge>
         </b-card>
 
@@ -49,6 +49,12 @@ export default {
   data () {
     return {
 
+    }
+  },
+
+  methods: {
+    getUltimasEntregas() {
+      return this.$store.getters.ENTREGAS_LAST_XX_DAYS(10).length
     }
   }
 }

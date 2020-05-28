@@ -8,7 +8,7 @@ from rest_framework import generics, permissions, viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
-from .models import (Cliente, EntregaCliente, FacturaCompra, FamiliaProducto,
+from .models import (EstadoProducto, Cliente, EntregaCliente, FacturaCompra, FamiliaProducto,
                      ItemEntregaCliente, ItemsFactura, Message,
                      PrecioHistoricoProducto, Producto, Proveedor,
                      PuntoLimpiezaCliente, StockHistoricoProducto,
@@ -16,7 +16,7 @@ from .models import (Cliente, EntregaCliente, FacturaCompra, FamiliaProducto,
 from .serializers import (
     MessageSerializer, PrecioHistoricoProductoSerializer, ProductoSerializer, EntregaClienteSerializer,
     StockHistoricoProductoSerializer, UserSerializer, ProductoStockSerializer, ProductoPreciosSerializer,
-    TipoProductoSerializer, FamiliaProductoSerializer, ClienteSerializer, PuntoLimpiezaClienteSerializer,
+    EstadoProductoSerializer, TipoProductoSerializer, FamiliaProductoSerializer, ClienteSerializer, PuntoLimpiezaClienteSerializer,
     ProductoReporteConsumoSerializer, ProveedorSerializer, FacturaCompraSerializer, FacturaCompraCreateSerializer,
     ItemEntregaClienteSerializer, ItemsFacturaSerializer)
 
@@ -63,7 +63,7 @@ class ProductoStockViewSet(viewsets.ModelViewSet):
     serializer_class = ProductoStockSerializer
 
 class ProductoPreciosViewSet(viewsets.ModelViewSet):
-    queryset = Producto.objects.all().filter(estado="OK")
+    queryset = Producto.objects.all().filter(estado__codigo="ACTIVO")
     serializer_class = ProductoPreciosSerializer
 
 class ProductoViewSet(viewsets.ModelViewSet):
@@ -71,12 +71,16 @@ class ProductoViewSet(viewsets.ModelViewSet):
     serializer_class = ProductoSerializer
 
 class ProductoActivoViewSet(viewsets.ModelViewSet):
-    queryset = Producto.objects.all().filter(estado="OK")
+    queryset = Producto.objects.all().filter(estado__codigo="ACTIVO")
     serializer_class = ProductoSerializer
 
 class TipoProductoViewSet(viewsets.ModelViewSet):
     queryset = TipoProducto.objects.all()
     serializer_class = TipoProductoSerializer
+
+class EstadoProductoViewSet(viewsets.ModelViewSet):
+    queryset = EstadoProducto.objects.all()
+    serializer_class = EstadoProductoSerializer
 
 class FamiliaProductoViewSet(viewsets.ModelViewSet):
     queryset = FamiliaProducto.objects.all()

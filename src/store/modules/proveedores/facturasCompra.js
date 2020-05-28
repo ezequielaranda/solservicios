@@ -17,15 +17,17 @@ const actions = {
   },
 
   ADD_FACTURA_COMPRA: (context, data) => {
-    addFacturaCompra(data).then((responseFacturaCompra) => { 
-      data.itemsFactura.forEach(element => {
-        element.producto = element.productoObject.id
-        element.facturaCompra = responseFacturaCompra.data.id
-        context.dispatch('ADD_ITEM_FACTURA_COMPRA', {'data':element, 'fecha':data.fecha_factura_compra})
-      })
-      context.commit('ADD_FACTURA_COMPRA', responseFacturaCompra.data)
+    return new Promise((resolve, reject) => {
+      addFacturaCompra(data).then( (responseFacturaCompra) => {
+        data.itemsFactura.forEach(element => {
+          element.producto = element.productoObject.id
+          element.facturaCompra = responseFacturaCompra.data.id
+          context.dispatch('ADD_ITEM_FACTURA_COMPRA', {'data':element, 'fecha':data.fecha_factura_compra})
+        })
+        context.commit('ADD_FACTURA_COMPRA', responseFacturaCompra.data)
+        resolve()
+      }, (error) => { reject(error) })
     })
-
   },
 
   ADD_ITEM_FACTURA_COMPRA: (context, payload) => {
@@ -61,11 +63,15 @@ const actions = {
 const mutations = {
 
   SET_FACTURASCOMPRA: (state, facturasCompra) => {
+    console.log("SET FACTURA" )
+    console.log(facturasCompra)
     state.facturasCompra = facturasCompra
   },
 
   ADD_FACTURA_COMPRA: (state, facturaCompra) => {
+    // HAgo el GET a la base antes de insertarlo al array, para tener los itemsFactura
     getFacturaCompraById(facturaCompra.id).then((response) => {
+      console.log("ADD FACTURA " + response.data )
       state.facturasCompra.push(response.data)
     })
   },

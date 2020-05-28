@@ -266,6 +266,7 @@ export default {
     }
   },
   methods: {
+    
     onSubmit (evt) {
       evt.preventDefault()
       if (this.stateProveedor() && this.stateFechaFactura()) {
@@ -275,10 +276,12 @@ export default {
           this.form.importe_total = this.total
           this.form.importe_neto_gravado = this.allSubTotal
           this.form.iva21 = this.allIVAitems
-          this.$store.dispatch('ADD_FACTURA_COMPRA', this.form)
-          swal('Factura de Compra creada exitosamente!', '', 'success').then(
-            this.$router.push({ name: 'ListaFacturaCompraView' })
-          )
+          this.$store.dispatch('ADD_FACTURA_COMPRA', this.form).then( response => {
+                swal('Factura de Compra creada exitosamente!', '', 'success')
+                this.$router.push({ name: 'ListaFacturaCompraView' })
+              }, error => {
+                swal('No se pudo crear la nueva Factura de Compra.', '', 'error')
+              })
         } else {
           swal('No se han agregado productos a la Factura.', '', 'error')
         }

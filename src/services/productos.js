@@ -3,6 +3,7 @@ import api from '@/services/api'
 const END_POINT_PRODUCTO = 'productos/'
 const END_POINT_STOCK_PRODUCTOS = 'stockProductosConsulta/'
 const END_POINT_TIPO_PRODUCTO = 'tiposproducto/'
+const END_POINT_ESTADO_PRODUCTO = 'estadosproducto/'
 const END_POINT_FAMILIA_PRODUCTO = 'familiasproducto/'
 const END_POINT_PRECIOS = 'preciosHistoricos/'
 const END_POINT_PRECIOS_PRODUCTOS = 'preciosHistoricosProductos/'
@@ -17,6 +18,8 @@ const getPreciosProductos = () => api.get(END_POINT_PRECIOS_PRODUCTOS)
 const addProducto = (formProducto) => api.post(END_POINT_PRODUCTO, formProducto)
 const editProducto = (formProducto) => api.put(END_POINT_PRODUCTO + formProducto.id + '/', formProducto)
 const deleteProducto = (productoId) => api.delete(END_POINT_PRODUCTO + productoId + '/')
+
+const getEstadosProducto = () => api.get(END_POINT_ESTADO_PRODUCTO)
 
 const getTiposProducto = () => api.get(END_POINT_TIPO_PRODUCTO)
 const addTipoProducto = (formTipoProducto) => api.post(END_POINT_TIPO_PRODUCTO, formTipoProducto)
@@ -61,5 +64,6 @@ export {
   getTipoProductoById,
   getFamiliaProductoById,
   addTipoProducto,
-  addFamiliaProducto
+  addFamiliaProducto,
+  getEstadosProducto
 }

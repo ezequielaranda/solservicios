@@ -12,7 +12,7 @@
                     <b-dropdown-item to="/tipoProductos">Lista de Tipos de Productos</b-dropdown-item>
                     <b-dropdown-item to="/familiaProductos">Lista de Familias de Productos</b-dropdown-item>
                     <b-dropdown-divider></b-dropdown-divider>
-                    <b-dropdown-item to="/newEntregaProductoView">Alta de Entrega de productos</b-dropdown-item>
+                    <b-dropdown-item to="/newEntregaClienteView">Alta de Entrega de productos</b-dropdown-item>
                   </b-dropdown>
                   <b-dropdown text="Proveedores" class="shadow m-sm-3" variant="outline-light">
                       <b-dropdown-item to="/listaProveedores">Lista de Proveedores</b-dropdown-item>
