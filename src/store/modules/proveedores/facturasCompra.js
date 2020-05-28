@@ -1,3 +1,4 @@
+import moment from 'moment';
 import { getFacturasCompra,
          addFacturaCompra,
          addItemFacturaCompra,
@@ -63,15 +64,12 @@ const actions = {
 const mutations = {
 
   SET_FACTURASCOMPRA: (state, facturasCompra) => {
-    console.log("SET FACTURA" )
-    console.log(facturasCompra)
     state.facturasCompra = facturasCompra
   },
 
   ADD_FACTURA_COMPRA: (state, facturaCompra) => {
     // HAgo el GET a la base antes de insertarlo al array, para tener los itemsFactura
     getFacturaCompraById(facturaCompra.id).then((response) => {
-      console.log("ADD FACTURA " + response.data )
       state.facturasCompra.push(response.data)
     })
   },
@@ -84,7 +82,10 @@ const mutations = {
 const getters = {
   FACTURASCOMPRA: state => {
     return state.facturasCompra
-  }
+  },
+  FACTURAS_LAST_XX_DAYS: (state) => (days) => {
+    return state.facturasCompra.filter(factura => moment(factura.fecha_factura_compra) > moment().subtract(days, 'days'))
+  } 
 }
 
 export default {

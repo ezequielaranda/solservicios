@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from '@/App.vue'
 
-import moment from 'moment';
+// import moment from 'moment';
 
 import store from '@/store' 
 import router from '@/router'
@@ -18,7 +18,7 @@ Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VueRouter)
 Vue.use(VueSession)
-Vue.use(moment)
+// Vue.use(moment)
 Vue.component('v-select', vSelect)
 
 // Vue.use(VueRouter)

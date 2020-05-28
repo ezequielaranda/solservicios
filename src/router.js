@@ -8,6 +8,7 @@ import Auth from './views/login/Auth.vue'
 import AccessNotAllowed from './views/login/AccessNotAllowed.vue'
 import Home2 from './views/Home2.vue'
 import HomeAdmin from './views/HomeAdmin.vue'
+import HomeUser from './views/HomeUser.vue'
 import ListaProductosView from './views/productos/producto/ListaProductosView.vue'
 
 import ReporteConsumoClientesView from './views/reportes/ReporteConsumoClientesView.vue'
@@ -76,6 +77,12 @@ export default new Router({
       path: '/homeAdmin',
       name: 'homeAdmin',
       component: HomeAdmin,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/homeUser',
+      name: 'homeUser',
+      component: HomeUser,
       beforeEnter: ifAuthenticated
     },
     {

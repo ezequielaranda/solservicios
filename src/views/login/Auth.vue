@@ -49,6 +49,10 @@ export default {
     }
   },
 
+  computed: {
+    isAdminUser: function () { return this.$store.getters.isAdminUser }
+  },
+
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
@@ -74,7 +78,9 @@ export default {
               this.$store.dispatch('GET_PRODUCTOS')
               // this.$store.dispatch('GET_FACTURASCOMPRA')
               this.$store.dispatch('GET_ENTREGAS')
-              this.$router.push('/') 
+                this.$router.push('/')
+              
+              
             })
         .catch(error => {
           this.logout()

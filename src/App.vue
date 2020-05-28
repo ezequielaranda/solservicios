@@ -2,8 +2,6 @@
     <b-container id="app" fluid>
      <b-row>
         <navigation />
-        <!--router-link :to="{ name: 'home' }">Vue</router-link> |
-        <router-link :to="{ name: 'messages' }">Django Rest</router-link-->
      </b-row>
     <b-row class="main-container">
       <router-view  />

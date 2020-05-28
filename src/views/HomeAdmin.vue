@@ -4,33 +4,25 @@
         <b-card header-bg-variant="info"
                 bg-variant="light" 
                 text-variant="light" 
-                header="Número de productos actuales" 
+                header="Cantidad de productos activos" 
                 class="shadow">
-          <b-badge>
-            300
-          </b-badge>
+          <b-badge> {{this.getProductosActivos()}} </b-badge>
         </b-card>
-
         <b-card header-bg-variant="info" 
                 bg-variant="Light" 
                 header-text-variant="white" 
                 text-variant="dark" 
-                header="Cantidad de Entregas realizadas en los últimos 10 días" 
+                header="Entregas a clientes en los últimos 10 días" 
                 class="shadow">
-          <b-badge> {{this.getUltimasEntregas(10)}}
-            
-          </b-badge>
+          <b-badge> {{this.getUltimasEntregas(10)}} </b-badge>
         </b-card>
-
         <b-card header-bg-variant="info" 
                 bg-variant="white" 
                 header-text-variant="white"  
                 text-variant="dark" 
-                header="Cantidad de Facturas de compra ingresadas en los últmos 30 días" 
+                header="Facturas en los últimos 30 días" 
                 class="shadow">
-          <b-badge>
-            300
-          </b-badge>
+          <b-badge> {{this.getUltimasFacturas(10)}} </b-badge>
         </b-card>
       </b-card-group>
     </b-container>
@@ -53,9 +45,9 @@ export default {
   },
 
   methods: {
-    getUltimasEntregas() {
-      return this.$store.getters.ENTREGAS_LAST_XX_DAYS(10).length
-    }
+    getUltimasEntregas() { return this.$store.getters.ENTREGAS_LAST_XX_DAYS(10).length },
+    getUltimasFacturas() { return this.$store.getters.FACTURAS_LAST_XX_DAYS(10).length },
+    getProductosActivos() { return this.$store.getters.PRODUCTOS.length}
   }
 }
 </script>

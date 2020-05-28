@@ -141,9 +141,10 @@ export default {
 
   methods: {
     onSubmit (evt) {
+      evt.preventDefault()
       if (this.stateProveedor && this.stateTipoProducto && 
           this.stateFamiliaProducto && this.stateNombreCompleto && this.stateEstadoProducto) {
-        evt.preventDefault()
+        
         if(this.isEdit) {
           this.$store.dispatch('EDIT_PRODUCTO', this.form).then(
             swal('Producto editado exitosamente!', '', 'success'),

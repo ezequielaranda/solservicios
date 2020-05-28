@@ -21,7 +21,8 @@ const actions = {
   },
 
   ADD_PRODUCTO: (context, data) => {
-    addProducto(data).then((response) => { context.commit('ADD_PRODUCTO', response.data) }) 
+    addProducto(data).then((response) => { 
+      context.commit('ADD_PRODUCTO', response.data) }) 
   },
 
   EDIT_PRODUCTO: (context, data) => {
