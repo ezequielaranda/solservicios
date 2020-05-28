@@ -4,6 +4,7 @@ const END_POINT_CLIENTE = 'clientes/'
 const END_POINT_PUNTO_LIMPIEZA_CLIENTE = 'puntosLimpiezaCliente/'
 const END_POINT_ENTREGA_CLIENTE = 'entregasCliente/'
 const END_POINT_ITEMS_ENTREGA_CLIENTE = 'itemEntregaCliente/'
+const END_POINT_STOCK_PRODUCTO = 'stockProductos/'
 
 
 const getPuntoLimpiezaClienteById = (puntoLimpiezaClienteId) => api.get(END_POINT_PUNTO_LIMPIEZA_CLIENTE + puntoLimpiezaClienteId)
@@ -14,9 +15,10 @@ const editPuntoLimpiezaCliente = (formPuntoLimpiezaCliente) => api.put(END_POINT
 const deletePuntoLimpiezaCliente = (puntoLimpiezaClienteId) => api.delete(END_POINT_PUNTO_LIMPIEZA_CLIENTE + puntoLimpiezaClienteId + '/')
 
 const getEntregasCliente = () => api.get(END_POINT_ENTREGA_CLIENTE)
-const getEntregaCliente = (entregaId) => api.get(END_POINT_ENTREGA_CLIENTE + entregaId)
+const getEntregaClienteById = (entregaId) => api.get(END_POINT_ENTREGA_CLIENTE + entregaId)
 const addEntregaCliente = async (entregaCliente) => api.post(END_POINT_ENTREGA_CLIENTE, entregaCliente)
 const addItemEntregaCliente = async (itemEntregaCliente) => api.post(END_POINT_ITEMS_ENTREGA_CLIENTE, itemEntregaCliente)
+const addStockItemEntregaCliente = (stockItemEntregaCliente) => api.post(END_POINT_STOCK_PRODUCTO, stockItemEntregaCliente)
 const deleteEntregaCliente = (entregaId) => api.delete(END_POINT_ENTREGA_CLIENTE + entregaId + '/')
 
 const getClientes = () => api.get(END_POINT_CLIENTE)
@@ -33,9 +35,10 @@ export {
   getClientes,
   getPuntosLimpiezaClienteByIdCliente,
   getPuntosLimpiezaCliente,
-  getEntregaCliente,
+  getEntregaClienteById,
   addEntregaCliente,
   addItemEntregaCliente,
+  addStockItemEntregaCliente,
   getEntregasCliente,
   getPuntoLimpiezaClienteById,
   addCliente,

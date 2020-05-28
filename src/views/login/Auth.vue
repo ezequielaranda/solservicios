@@ -71,6 +71,8 @@ export default {
               this.$store.dispatch('GET_TIPO_PRODUCTOS')
               this.$store.dispatch('GET_FAMILIAS_PRODUCTO')
               this.$store.dispatch('GET_PRODUCTOS')
+              this.$store.dispatch('GET_FACTURASCOMPRA')
+              this.$store.dispatch('GET_ENTREGAS')
               this.$router.push('/') 
             })
         .catch(error => {

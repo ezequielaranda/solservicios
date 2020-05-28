@@ -22,7 +22,7 @@ const actions = {
         element.producto = element.productoObject.id
         element.facturaCompra = responseFacturaCompra.data.id
         context.dispatch('ADD_ITEM_FACTURA_COMPRA', {'data':element, 'fecha':data.fecha_factura_compra})
-      });
+      })
       context.commit('ADD_FACTURA_COMPRA', responseFacturaCompra.data)
     })
 
@@ -40,7 +40,6 @@ const actions = {
       dataStock.itemEntrega = null
       context.dispatch('ADD_STOCK_ITEM_FACTURA_COMPRA', dataStock)
       let precioProducto = {}
-      console.log(payload)
       precioProducto.fecha_inicio = payload.fecha
       precioProducto.importe = responseItemFacturaCompra.data.precio_compra
       precioProducto.isCurrent = true

@@ -55,7 +55,6 @@
 
 <script>
 
-import { deleteProveedor } from '@/services/proveedores.js'
 import swal from 'sweetalert'
 
 export default {
@@ -102,7 +101,6 @@ export default {
               this.$store.dispatch('DELETE_PROVEEDOR', proveedorId).then(
                 swal('Proveedor eliminado exitosamente.', '', 'success')
               ).catch((error) => {
-                console.log(error);
                 swal('El Proveedor seleccionado no puede ser eliminado.', '', 'error')
               })
               break

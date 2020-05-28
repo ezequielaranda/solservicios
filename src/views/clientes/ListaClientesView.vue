@@ -99,7 +99,7 @@ export default {
 
 
   methods: {
-    deleteEntregaCliente (clienteId) {
+    deleteCliente (clienteId) {
       swal('Está seguro de eliminar El Cliente seleccionado?', {
         buttons: {
           cancel: 'Cancelar',
@@ -113,10 +113,9 @@ export default {
         .then((value) => {
           switch (value) {
             case 'catch':
-              this.$store.dispatch('DELETE_CLIENTE', clienteId).then(
+              this.$store.dispatch('DELETE_CLIENTE', clienteId).then( response => {
                 swal('Cliente eliminado exitosamente.', '', 'success')
-              ).catch((error) => {
-                console.log(error);
+              }, error => {
                 swal('El Cliente seleccionado no puede ser eliminado.', '', 'error')
               })
               break

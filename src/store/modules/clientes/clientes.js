@@ -39,7 +39,14 @@ EDIT_PUNTO_CLIENTE: (context, data) => {
 },
 
 DELETE_CLIENTE: (context, idCliente) => {
-  deleteCliente(idCliente).then(() => { context.commit('DELETE_CLIENTE', idCliente)} )
+  return new Promise((resolve, reject) => {
+    deleteCliente(idCliente).then(() => {
+      context.commit('DELETE_CLIENTE', idCliente)
+      resolve()
+    }, (error) => {
+        reject(error)
+       }) 
+  })
 },
 
 DELETE_PUNTO_CLIENTE: (context, idPuntoCliente) => {

@@ -22,7 +22,14 @@ editProveedor(data).then((response) => { context.commit('EDIT_PROVEEDOR', respon
 },
 
 DELETE_PROVEEDOR: (context, idProveedor) => {
-deleteProveedor(idProveedor).then(() => { context.commit('DELETE_PROVEEDOR', idProveedor)} )
+  return new Promise((resolve, reject) => {
+    deleteProveedor(idProveedor).then(() => {
+      context.commit('DELETE_PROVEEDOR', idProveedor)
+      resolve()
+    }, (error) => {
+        reject(error)
+       }) 
+  })
 },
 }
 

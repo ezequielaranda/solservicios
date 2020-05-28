@@ -11,6 +11,7 @@ const state = {
 const getters = {
   getProfile: state => state.profile,
   getUserName: state => { return state.profile.username },
+  getUserID: state => { return state.profile.id },
   isProfileLoaded: state => !!state.profile.name,
   isAdminUser: state => state.profile.is_superuser
 }

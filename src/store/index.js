@@ -8,6 +8,7 @@ import facturasCompra from './modules/proveedores/facturasCompra.js'
 import productos from './modules/productos/productos.js'
 import proveedores from './modules/proveedores/proveedores.js'
 import clientes from './modules/clientes/clientes.js'
+import entregas from './modules/clientes/entregasCliente.js'
 import familiasProducto from './modules/productos/familiaProductos.js'
 
 Vue.use(Vuex)
@@ -22,6 +23,7 @@ export default new Vuex.Store({
     productos,
     proveedores,
     familiasProducto,
-    clientes
+    clientes,
+    entregas
   }
 })

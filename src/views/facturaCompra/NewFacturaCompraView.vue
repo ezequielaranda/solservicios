@@ -212,8 +212,6 @@
 <script>
 import DatePick from 'vue-date-pick'
 import 'vue-date-pick/dist/vueDatePick.css'
-import { getProveedores } from '@/services/proveedores.js'
-import { getProductos, addPrecioHistoricoProducto } from '@/services/productos.js'
 import swal from 'sweetalert'
 
 export default {
@@ -348,8 +346,11 @@ export default {
     },
 
     fetchData () {
-      getProveedores().then(response => { this.listaProveedores = response.data }).catch(error => console.log(error))
-      getProductos().then(response => { this.listaProductos = response.data }).catch(error => console.log(error))
+
+      this.listaProveedores = this.$store.getters.PROVEEDORES
+      this.listaProductos = this.$store.getters.PRODUCTOS
+      // getProveedores().then(response => { this.listaProveedores = response.data }).catch(error => console.log(error))
+      // getProductos().then(response => { this.listaProductos = response.data }).catch(error => console.log(error))
     },
 
     stateProveedor () { return this.form.proveedor != null },

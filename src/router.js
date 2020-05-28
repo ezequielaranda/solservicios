@@ -30,6 +30,10 @@ import ListaFacturaCompraView from './views/facturaCompra/ListaFacturaCompraView
 import ListaProveedoresView from './views/proveedores/ListaProveedoresView.vue'
 import NewEditProveedorView from './views/proveedores/NewEditProveedorView.vue'
 
+import ListaEntregaClienteView from './views/entregas/ListaEntregaClienteView.vue'
+import NewEntregaClienteView from './views/entregas/NewEntregaClienteView.vue'
+import NewDevolucionEntregaClienteView from './views/entregas/NewDevolucionEntregaClienteView.vue'
+
 
 const ifAuthenticated = (to, from, next) => {
   if (store.getters.isAuthenticated) {
@@ -169,6 +173,24 @@ export default new Router({
       path: '/newEditPuntoLimpiezaClienteView',
       name: 'NewEditPuntoLimpiezaClienteView',
       component: NewEditPuntoLimpiezaClienteView,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/listaEntregaClienteView',
+      name: 'ListaEntregaClienteView',
+      component: ListaEntregaClienteView,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/newEntregaClienteView',
+      name: 'NewEntregaClienteView',
+      component: NewEntregaClienteView,
+      beforeEnter: ifAuthenticated
+    },
+    {
+      path: '/newDevolucionEntregaClienteView/:entregaId',
+      name: 'newDevolucionEntregaClienteView',
+      component: NewDevolucionEntregaClienteView,
       beforeEnter: ifAuthenticated
     },
 
