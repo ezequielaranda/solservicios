@@ -12,7 +12,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 from .api.views import (
     MessageViewSet, ProductoActivoViewSet, ProductoViewSet,
-    EstadoProductoViewSet, TipoProductoViewSet, UserViewSet, index_view,
+    EstadoViewSet, TipoProductoViewSet, UserViewSet, index_view,
     FamiliaProductoViewSet, ProveedorViewSet, FacturaCompraViewSet,
     FacturaCompraCreateViewSet, ItemsFacturaViewSet, ItemEntregaClienteViewSet,
     StockHistoricoProductoViewSet, ProductoStockViewSet, EntregaClienteViewSet,
@@ -24,7 +24,7 @@ router.register('messages', MessageViewSet)
 router.register('productos', ProductoViewSet)
 router.register('productosActivos', ProductoActivoViewSet) 
 router.register('tiposproducto', TipoProductoViewSet)
-router.register('estadosproducto', EstadoProductoViewSet)
+router.register('estadosproducto', EstadoViewSet)
 router.register('familiasproducto', FamiliaProductoViewSet)
 router.register('usuarios', UserViewSet, basename='User')
 router.register('proveedores', ProveedorViewSet)

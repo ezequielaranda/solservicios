@@ -29,12 +29,36 @@ const actions = {
     })
   },
 
+  ADD_DEVOLUCION: (context, entrega) => {
+      entrega.itemsEntrega.forEach(elementEntrega => {
+        elementEntrega.producto = elementEntrega.nombreProducto.id
+        elementEntrega.entregaCliente = entrega.idEntregaCliente
+        context.dispatch('ADD_ITEM_DEVOLUCION', elementEntrega)
+      })
+      
+   
+  },
+
   ADD_ITEM_ENTREGA: (context, itemEntrega) => {
     addItemEntregaCliente(itemEntrega).then((responseItemEntrega) => {
       let dataStock = {}
       dataStock.fecha_alta = responseItemEntrega.data.fecha_alta_item_entrega
       dataStock.cantidad = -responseItemEntrega.data.cantidad
       dataStock.estacion_kanban = 'ST_OUT'
+      dataStock.estado = 0
+      dataStock.producto = responseItemEntrega.data.producto
+      dataStock.itemEntrega = responseItemEntrega.data.id
+      dataStock.itemFactura = null
+      context.dispatch('ADD_STOCK_ITEM_ENTREGA', dataStock)
+    })
+  },
+
+  ADD_ITEM_DEVOLUCION: (context, itemEntrega) => {
+    addItemEntregaCliente(itemEntrega).then((responseItemEntrega) => {
+      let dataStock = {}
+      dataStock.fecha_alta = responseItemEntrega.data.fecha_alta_item_entrega
+      dataStock.cantidad = responseItemEntrega.data.cantidad
+      dataStock.estacion_kanban = 'ST_IN'
       dataStock.estado = 0
       dataStock.producto = responseItemEntrega.data.producto
       dataStock.itemEntrega = responseItemEntrega.data.id
@@ -68,6 +92,7 @@ const mutations = {
 
 const getters = {
   ENTREGAS: state => { return state.entregasCliente },
+  ENTREGA_BY_ID: (state) => (idEntrega) => { return state.entregasCliente.find(entrega => entrega.id === idEntrega) },
   ENTREGAS_LAST_XX_DAYS: (state) => (days) => {
     return state.entregasCliente.filter(entrega => moment(entrega.fecha_entrega) > moment().subtract(days, 'days'))
   } 

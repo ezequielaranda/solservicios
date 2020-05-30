@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='producto',
             name='estado',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.EstadoProducto'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='api.Estado'),
         ),
     ]

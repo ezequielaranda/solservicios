@@ -1,4 +1,4 @@
-from .models import Message, EstadoProducto, TipoProducto, FamiliaProducto, FacturaCompra, EntregaCliente, PrecioHistoricoProducto, StockHistoricoProducto, Producto, Proveedor, Accion, Cliente, PuntoLimpiezaCliente, Proveedor, ItemsFactura, ItemEntregaCliente
+from .models import Message, Estado, TipoProducto, FamiliaProducto, FacturaCompra, EntregaCliente, PrecioHistoricoProducto, StockHistoricoProducto, Producto, Proveedor, Accion, Cliente, PuntoLimpiezaCliente, Proveedor, ItemsFactura, ItemEntregaCliente
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
@@ -109,9 +109,9 @@ class TipoProductoSerializer(serializers.ModelSerializer):
         model = TipoProducto
         fields = '__all__'
 
-class EstadoProductoSerializer(serializers.ModelSerializer):
+class EstadoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = EstadoProducto
+        model = Estado
         fields = '__all__'
 
 class FamiliaProductoSerializer(serializers.ModelSerializer):

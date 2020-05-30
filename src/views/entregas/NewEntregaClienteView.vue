@@ -233,6 +233,7 @@ onReset (evt) {
     // stateFechaEntrega () { return this.form.fecha_entrega !== '' },
 
     setPuntosLimpiezaCliente (cliente) {
+      console.log(cliente)
       this.form.punto_limpieza_cliente = null
       this.listaPuntosLimpiezaCliente = this.$store.getters.PUNTO_CLIENTE_BY_CLIENTE_ID(cliente.id)
     },

@@ -178,8 +178,6 @@ export default {
   methods: {
 
     info (item, index, button) {
-      // getPuntoLimpiezaCliente(item.punto_limpieza_cliente).then((response) => { this.infoModal.punto_limpieza_cliente = response.data })
-      
       this.infoModal.punto_limpieza_cliente = this.$store.getters.PUNTO_CLIENTE_BY_ID(item.punto_limpieza_cliente)
       this.infoModal.title = `Row index: ${index}`
       this.infoModal.content = item

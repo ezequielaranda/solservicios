@@ -114,9 +114,6 @@
 </template>
 
 <script>
-import { getPuntosLimpiezaCliente, getEntregaCliente, addItemEntregaCliente } from '@/services/clientes.js'
-import { addStockItemFacturaCompra } from '@/services/facturasCompra.js'
-import { getProductos } from '@/services/productos.js'
 import swal from 'sweetalert'
 
 export default {
@@ -124,13 +121,14 @@ export default {
 
   data () {
     return {
-      idEntregaCliente: null,
+      // idEntregaCliente: null,
       nombreClienteEntrega: '',
       nombrePuntoLimpiezaEntrega: '',
       fechaEntrega: '',
       showForm: true,
       form: {
-        usuario_alta: null,
+        idEntregaCliente: null,
+        usuario_alta: this.$store.getters.getUserID,
         itemsEntrega: []
       },
       originalData: null,
@@ -147,35 +145,17 @@ export default {
   },
 
   methods: {
-    async onSubmit (evt) {
+    onSubmit (evt) {
       evt.preventDefault()
       if (this.form.itemsEntrega.length === 0) {
         swal('No se han agregado productos.', '', 'error')
       } else {
-        this.form.usuario_alta = 1
-        await this.addDevolucionDeCliente(this.form)
-        swal('Entrega de productos a Cliente creada exitosamente!', '', 'success')
-        this.$router.push({ name: 'listaEntregaClienteView' })
+        // this.addDevolucionDeCliente(this.form)
+        this.$store.dispatch('ADD_DEVOLUCION', this.form)
+        swal('Devolución de Productos creada exitosamente!', '', 'success').then(
+            this.$router.push({ name: 'ListaEntregaClienteView' })
+          )
       }
-
-    },
-
-    async addDevolucionDeCliente (entregaCliente) {
-
-      entregaCliente.itemsEntrega.forEach(element => {
-        console.log(element)
-        element.producto = element.nombreProducto.id
-        element.entregaCliente = this.idEntregaCliente
-        addItemEntregaCliente(element).then((responseItemEntregaCliente) => {
-          let dataStock = {}
-          dataStock.fecha_alta = responseItemEntregaCliente.data.fecha_alta_item_entrega
-          dataStock.cantidad = responseItemEntregaCliente.data.cantidad
-          dataStock.estacion_kanban = 'ST_IN'
-          dataStock.estado = 0
-          dataStock.producto = responseItemEntregaCliente.data.producto
-          addStockItemFacturaCompra(dataStock)
-        })
-      })
 
     },
 
@@ -227,18 +207,19 @@ export default {
 
     setPuntosLimpiezaCliente (idCliente) {
       this.form.punto_limpieza_cliente = null
-      getPuntosLimpiezaCliente(idCliente.id).then((response) => { this.listaPuntosLimpiezaCliente = response.data })
+      // getPuntosLimpiezaCliente(idCliente.id).then((response) => { this.listaPuntosLimpiezaCliente = response.data })
+      this.listaPuntosLimpiezaCliente = this.$store.getters.PUNTO_CLIENTE_BY_CLIENTE_ID(idCliente)
     },
 
     fetchData () {
       // getClientes().then(response => { this.listaClientes = response.data }).catch(error => console.log(error))
-      getProductos().then(response => { this.listaProductos = response.data }).catch(error => console.log(error))
-      getEntregaCliente(this.$route.params.entregaId).then(response => {
-        this.idEntregaCliente = response.data.id
-        this.nombrePuntoLimpiezaEntrega = response.data.nombre_punto_limpieza_cliente
-        this.nombreClienteEntrega = response.data.nombre_cliente
-        this.fechaEntrega = response.data.fecha_entrega
-      }).catch(error => console.log(error))
+      this.listaProductos = this.$store.getters.PRODUCTOS
+      // getProductos().then(response => { this.listaProductos = response.data }).catch(error => console.log(error))
+      let entrega = this.$store.getters.ENTREGA_BY_ID(this.$route.params.entregaId)
+      this.form.idEntregaCliente = entrega.id
+      this.nombrePuntoLimpiezaEntrega = entrega.nombre_punto_limpieza_cliente
+      this.nombreClienteEntrega = entrega.nombre_cliente
+      this.fechaEntrega = entrega.fecha_entrega
     }
 
   },
