@@ -18,7 +18,7 @@ class Estado(models.Model):
 class Cliente(models.Model):
     nombre_completo = models.CharField(max_length=50)
     domicilio = models.CharField(max_length=60)
-    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.nombre_completo
@@ -44,7 +44,7 @@ class Proveedor(models.Model):
     )
     condicionIVA = models.CharField(max_length=2,choices=CONDICION_IVA_CHOICES)
     cuit = models.CharField(max_length=11)
-    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.nombre_completo
@@ -98,7 +98,7 @@ class EntregaCliente(models.Model):
     fecha_alta_entrega = models.DateField(auto_now=True)
     punto_limpieza_cliente = models.ForeignKey(PuntoLimpiezaCliente, on_delete=models.PROTECT)
     usuario_alta = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 class ItemEntregaCliente(models.Model):
     entregaCliente = models.ForeignKey(EntregaCliente, related_name='itemsEntrega', on_delete=models.CASCADE)
@@ -119,7 +119,7 @@ class FacturaCompra(models.Model):
     iva21 = models.FloatField()
     iva105 = models.FloatField()
     iva0 = models.FloatField()
-    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 
 class ItemsFactura(models.Model):
@@ -142,7 +142,7 @@ class OrdenCompra(models.Model):
         through='ItemsOrdenCompra',
         through_fields=('ordenCompra', 'producto'),
     )
-    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 class ItemsOrdenCompra(models.Model):
     ordenCompra = models.ForeignKey(OrdenCompra, on_delete=models.CASCADE)
