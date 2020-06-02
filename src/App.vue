@@ -62,14 +62,9 @@ export default {
 }
 
 body {
-  
-
-  font-family: 'Manrope', sans-serif !important;
-  -webkit-font-smoothing: antialiased;
-
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 14px;
+  line-height: 1.1;
 }
 
 .main-container {
