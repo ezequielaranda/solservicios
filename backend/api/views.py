@@ -87,7 +87,6 @@ class FamiliaProductoViewSet(viewsets.ModelViewSet):
     serializer_class = FamiliaProductoSerializer 
 
 class ClienteViewSet(viewsets.ModelViewSet):
-    permission_classes = (IsAdminUser,)
     queryset = Cliente.objects.all()
     serializer_class = ClienteSerializer
 

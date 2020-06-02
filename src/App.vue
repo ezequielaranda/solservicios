@@ -47,6 +47,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+
+
+
+  font-family: 'Manrope', sans-serif !important;
+  line-height: 1.0;
 }
 </style-->
 
@@ -57,9 +62,14 @@ export default {
 }
 
 body {
-  font-family: 'Roboto', sans-serif !important;
-  font-size: 16px;
-  line-height: 1.2;
+  
+
+  font-family: 'Manrope', sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
 }
 
 .main-container {
@@ -67,13 +77,14 @@ body {
 }
 
 .sq-footer {
-  background-color: #5bc0de;
+  background-color: #53aeca;
   height: 40px;
-  font-size: 12px;
+  font-size: 14px;
   display: flex;
   justify-content: center;
   color: white;
   align-items: center;
   padding-right: 1em;
+  font-family: 'Montserrat', sans-serif !important;
 }
 </style>

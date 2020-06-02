@@ -156,6 +156,8 @@ export default {
         this.form.nombre_completo = puntoLimpiezaCliente.nombre_completo
         this.form.domicilio = puntoLimpiezaCliente.domicilio
         this.form.id = idPuntoLimpiezaCliente
+        this.form.cliente = puntoLimpiezaCliente.cliente
+        
       }
     }
 }

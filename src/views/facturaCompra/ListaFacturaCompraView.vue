@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-3">
+  <b-container class="mt-3 body">
         <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaProveedores">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -203,7 +203,6 @@ export default {
 
   created () { 
     this.loading = true,
-    console.log("lanzo el DISPATCH de SET_FACTURASCOMPRA")
     this.$store.dispatch('GET_FACTURASCOMPRA')
     this.loading = false },
 
@@ -309,5 +308,11 @@ export default {
   .thick {
     font-size: 20px;
     color: white;
+    font-family: 'Chelsea Market', !important;
   }
+  .body {
+    font-family: 'Chelsea Market', !important;
+    line-height: 1.2; 
+  }
+
 </style>

@@ -78,7 +78,7 @@
                       size="sm"
                       variant="info"
                       class="mr-2"
-                      :to="{ name:'newEditPuntoLimpiezaClienteView', params: {idPuntoLimpiezaCliente: row.item.id} }">
+                      :to="{ name:'NewEditPuntoLimpiezaClienteView', params: {idPuntoLimpiezaCliente: row.item.id} }">
                       <b-icon icon="pencil"></b-icon>Editar</b-button>
             <b-button pill size="sm" variant="outline-danger" @click='deletePuntoCliente(row.item.id)'><b-icon icon="trash"></b-icon>
             Eliminar</b-button>
