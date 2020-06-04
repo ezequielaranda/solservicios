@@ -113,18 +113,28 @@ export default {
 
   methods: {
     onSubmit (evt) {
+      evt.preventDefault()
       if (this.stateDomicilio && this.stateNombreCompleto && this.stateCliente) {
-        evt.preventDefault()
         if(this.isEdit) {
-          this.$store.dispatch('EDIT_PUNTO_CLIENTE', this.form).then(
-            swal('Punto de Limpieza editado exitosamente!', '', 'success'),
-            this.$router.push('listaClientes')
-          ).catch((error) => { swal(error.toString(), '', 'error') })
+          this.$store.dispatch('EDIT_PUNTO_CLIENTE', this.form).then( 
+            response => {
+              swal('Punto de Limpieza editado exitosamente!', '', 'success'),
+              this.$router.push('listaClientes')
+            },
+            error => {
+              swal(error.toString(), '', 'error')
+            }
+          )
         } else {
           this.$store.dispatch('ADD_PUNTO_CLIENTE', this.form).then(
-            swal('Punto de Limpieza creado exitosamente!', '', 'success'),
-            this.$router.push('listaClientes')
-          ).catch((error) => { swal(error.toString(), '', 'error') })
+            response => {
+              swal('Punto de Limpieza creado exitosamente!', '', 'success'),
+              this.$router.push('listaClientes')
+            },
+            error => {
+              swal(error.toString(), '', 'error')
+            }
+          )
         }
       } else {
         swal('Por favor, corrija los errores antes de continuar.', '', 'error')

@@ -14,51 +14,81 @@ puntosLimpiezaCliente: []
 }
 
 const actions = {
-GET_CLIENTES: (context) => {
-  getClientes().then((response) => { context.commit('SET_CLIENTES', response.data) })
-},
+  GET_CLIENTES: (context) => {
+    getClientes().then((response) => { context.commit('SET_CLIENTES', response.data) })
+  },
 
-GET_PUNTOS_CLIENTES: (context) => {
-  getPuntosLimpiezaCliente().then((response) => { context.commit('SET_PUNTOS_CLIENTES', response.data) })
-},
+  GET_PUNTOS_CLIENTES: (context) => {
+    getPuntosLimpiezaCliente().then((response) => { context.commit('SET_PUNTOS_CLIENTES', response.data) })
+  },
 
-ADD_CLIENTE: (context, data) => {
-  addCliente(data).then((response) => { context.commit('ADD_CLIENTE', response.data) }) 
-},
+  ADD_CLIENTE: (context, data) => {
+    addCliente(data).then((response) => { context.commit('ADD_CLIENTE', response.data) }) 
+  },
 
-ADD_PUNTO_CLIENTE: (context, data) => {
-  addPuntoLimpiezaCliente(data).then((response) => { context.commit('ADD_PUNTO_CLIENTE', response.data) }) 
-},
+  ADD_PUNTO_CLIENTE: (context, data) => {
+    return new Promise((resolve, reject) => {
+      addPuntoLimpiezaCliente(data).then(
+        (response) => {
+          context.commit('ADD_PUNTO_CLIENTE', response.data)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
+  },
 
-EDIT_CLIENTE: (context, data) => {
-  editCliente(data).then((response) => { context.commit('EDIT_CLIENTE', response.data) })
-},
+  EDIT_CLIENTE: (context, data) => {
+    return new Promise((resolve, reject) => {
+      editCliente(data).then(
+        (response) => {
+          context.commit('EDIT_CLIENTE', response.data)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
+  },
 
-EDIT_PUNTO_CLIENTE: (context, data) => {
-  editPuntoLimpiezaCliente(data).then((response) => { context.commit('EDIT_PUNTO_CLIENTE', response.data) })
-},
+  EDIT_PUNTO_CLIENTE: (context, data) => {
+    return new Promise((resolve, reject) => {
+      editPuntoLimpiezaCliente(data).then(
+        (response) => {
+          context.commit('EDIT_PUNTO_CLIENTE', response.data)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
+  },
 
-DELETE_CLIENTE: (context, idCliente) => {
-  return new Promise((resolve, reject) => {
-    deleteCliente(idCliente).then(() => {
-      context.commit('DELETE_CLIENTE', idCliente)
-      resolve()
-    }, (error) => {
-        reject(error)
-       }) 
-  })
-},
+  DELETE_CLIENTE: (context, idCliente) => {
+    return new Promise((resolve, reject) => {
+      deleteCliente(idCliente).then(() => {
+        context.commit('DELETE_CLIENTE', idCliente)
+        resolve()
+      }, (error) => {
+          reject(error)
+        }) 
+    })
+  },
 
-DELETE_PUNTO_CLIENTE: (context, idPuntoCliente) => {
-  return new Promise((resolve, reject) => {
-    deletePuntoLimpiezaCliente(idPuntoCliente).then(() => {
-      context.commit('DELETE_PUNTO_CLIENTE', idPuntoCliente)
-      resolve()
-    }, (error) => {
-        reject(error)
-       }) 
-  })
-},
+  DELETE_PUNTO_CLIENTE: (context, idPuntoCliente) => {
+    return new Promise((resolve, reject) => {
+      deletePuntoLimpiezaCliente(idPuntoCliente).then(() => {
+        context.commit('DELETE_PUNTO_CLIENTE', idPuntoCliente)
+        resolve()
+      }, (error) => {
+          reject(error)
+        }) 
+    })
+  },
 }
 
 const mutations = {
@@ -68,7 +98,9 @@ SET_PUNTOS_CLIENTES: (state, puntosClientes) => { state.puntosLimpiezaCliente = 
 
 ADD_CLIENTE: (state, cliente) => { state.clientes.push(cliente) },
 
-ADD_PUNTO_CLIENTE: (state, puntoLimpiezaCliente) => { state.puntosLimpiezaCliente.push(puntoLimpiezaCliente) },
+ADD_PUNTO_CLIENTE: (state, puntoLimpiezaCliente) => { 
+  state.puntosLimpiezaCliente.push(puntoLimpiezaCliente)
+},
 
 EDIT_CLIENTE: (state, cliente) => {
   const index = state.clientes.map(o => o.id).indexOf(cliente.id);
