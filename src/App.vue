@@ -63,7 +63,7 @@ export default {
 
 body {
   font-family: 'Roboto', sans-serif !important;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.1;
 }
 

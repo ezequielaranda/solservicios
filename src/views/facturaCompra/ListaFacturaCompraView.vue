@@ -308,11 +308,6 @@ export default {
   .thick {
     font-size: 20px;
     color: white;
-    font-family: 'Chelsea Market', !important;
-  }
-  .body {
-    font-family: 'Chelsea Market', !important;
-    line-height: 1.2; 
   }
 
 </style>
