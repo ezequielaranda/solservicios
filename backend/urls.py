@@ -11,16 +11,17 @@ from rest_framework.authtoken import views
 from rest_framework.authtoken.views import obtain_auth_token
 
 from .api.views import (
-    MessageViewSet, ProductoActivoViewSet, ProductoViewSet,
+    EmpresaViewSet, ProductoActivoViewSet, ProductoViewSet,
     EstadoViewSet, TipoProductoViewSet, UserViewSet, index_view,
     FamiliaProductoViewSet, ProveedorViewSet, FacturaCompraViewSet,
     FacturaCompraCreateViewSet, ItemsFacturaViewSet, ItemEntregaClienteViewSet,
-    StockHistoricoProductoViewSet, ProductoStockViewSet, EntregaClienteViewSet,
+    StockHistoricoProductoViewSet, StockHistoricoByProductoEstadoViewSet, 
+    ProductoStockViewSet, EntregaClienteViewSet,
     PrecioHistoricoProductoViewSet, ProductoPreciosViewSet,
     ClienteViewSet, PuntoLimpiezaClienteViewSet, ProductoReporteConsumoViewSet)
 
 router = routers.DefaultRouter()
-router.register('messages', MessageViewSet)
+router.register('datosEmpresa', EmpresaViewSet)
 router.register('productos', ProductoViewSet)
 router.register('productosActivos', ProductoActivoViewSet) 
 router.register('tiposproducto', TipoProductoViewSet)
@@ -32,8 +33,12 @@ router.register('facturasCompra', FacturaCompraViewSet)
 router.register('facturasCompraCreate', FacturaCompraCreateViewSet)
 router.register('itemsFacturaCompra', ItemsFacturaViewSet)
 router.register('itemEntregaCliente', ItemEntregaClienteViewSet)
+
 router.register('stockProductos', StockHistoricoProductoViewSet)
 router.register('stockProductosConsulta', ProductoStockViewSet)
+router.register('stockHistoricoByProductoEstado', StockHistoricoByProductoEstadoViewSet, basename='StockHistoricoProducto')
+
+
 router.register('entregasCliente', EntregaClienteViewSet)
 router.register('preciosHistoricos', PrecioHistoricoProductoViewSet)
 router.register('preciosHistoricosProductos', ProductoPreciosViewSet)

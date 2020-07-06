@@ -8,8 +8,9 @@ const END_POINT_FAMILIA_PRODUCTO = 'familiasproducto/'
 const END_POINT_PRECIOS = 'preciosHistoricos/'
 const END_POINT_PRECIOS_PRODUCTOS = 'preciosHistoricosProductos/'
 const END_POINT_REPORTE_CONSUMO_CLIENTES = 'reporteEntregasAClientes/'
+const END_POINT_STOCK_HISTORICO_BY_PRODUCTO_ESTADO = 'stockHistoricoByProductoEstado/'
 
-
+const getStockHistoricoByIdProductoEstado = (productoId, estado) => api.get(END_POINT_STOCK_HISTORICO_BY_PRODUCTO_ESTADO, { params: { producto: productoId, estado: estado } })
 
 const getProductos = () => api.get(END_POINT_PRODUCTO)
 const getProductoById = (idProducto) => api.get(END_POINT_PRODUCTO + idProducto + '/')
@@ -65,5 +66,6 @@ export {
   getFamiliaProductoById,
   addTipoProducto,
   addFamiliaProducto,
-  getEstadosProducto
+  getEstadosProducto,
+  getStockHistoricoByIdProductoEstado
 }

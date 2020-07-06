@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-3">
+  <b-container fluid class="mt-3">
     <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaClientes">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -132,6 +132,7 @@ export default {
               this.$router.push('listaClientes')
             },
             error => {
+              console.log(error)
               swal(error.toString(), '', 'error')
             }
           )

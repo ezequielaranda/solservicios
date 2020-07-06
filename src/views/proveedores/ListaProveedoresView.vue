@@ -1,5 +1,5 @@
 <template>
-   <b-container class="mt-3">
+   <b-container fluid class="mt-3">
         <b-breadcrumb class="shadow">
             <b-breadcrumb-item active href="#home">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>

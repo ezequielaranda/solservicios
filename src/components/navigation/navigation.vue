@@ -1,8 +1,7 @@
 <template>
-  <b-container class="navigation" fluid>
-      <b-col >
+  <b-container fluid class="navigation">
         <b-navbar class="shadow" toggleable="lg" type="dark" variant="info">
-          <b-navbar-brand to="/">SOL SERVICIOS S.A.</b-navbar-brand>
+          <b-navbar-brand to="/">Gestión de Stock</b-navbar-brand>
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
               <b-collapse id="nav-collapse" is-nav>
                 <b-navbar-nav v-if="isAuthenticated">
@@ -17,6 +16,7 @@
                   <b-dropdown text="Proveedores" class="shadow m-sm-1" variant="outline-light">
                       <b-dropdown-item to="/listaProveedores">Lista de Proveedores</b-dropdown-item>
                       <b-dropdown-item to="/listaFacturasCompra">Facturas de compra</b-dropdown-item>
+                      <b-dropdown-item disabled to="">Órdenes de compra</b-dropdown-item>
 
                   </b-dropdown>
                   <b-dropdown text="Clientes" class="m-sm-1" variant="outline-light">
@@ -44,7 +44,7 @@
                                 class="mr-2 ml-2 text-center">
 
                           <b-card-body>
-                            <b-table-simple table-variant="success" bordered stacked small>
+                            <b-table-simple table-variant="info" bordered stacked small>
                               <b-tbody>
                                 <b-tr >
                                   <b-th sticky-column>Nombre: </b-th>
@@ -58,14 +58,15 @@
                                   <b-th sticky-column>Nombre de usuario: </b-th>
                                   <b-td>{{this.getProfile.username}}</b-td>
                                 </b-tr>
-                                <b-tr class="table-warning">
+                                <b-tr class="table-success">
                                   <b-th sticky-column>Es administrador: </b-th>
                                   <b-td>{{(this.getProfile.is_superuser) ? "SI" : "NO"}}</b-td>
                                 </b-tr>
                               </b-tbody>
                             </b-table-simple>
                           </b-card-body>
-                          <b-button variant="outline-danger" size=md @click="logout()">Salir de la Aplicación</b-button>
+                          <b-button variant="outline-danger" size=md @click="logout()">
+                            <b-icon icon="power" aria-hidden="true"></b-icon> Salir</b-button>
                         </b-card>
                       </b-sidebar>
                       <!--b-card-text>Usuario: <b-badge variant="info">{{ this.getUserName }}</b-badge-->  
@@ -82,7 +83,7 @@
                 </b-navbar-nav>
                </b-collapse>
         </b-navbar>
-        </b-col>
+        
     </b-container>
 </template>
 
@@ -97,8 +98,7 @@ export default {
   },
 
   mounted () {
-    console.log(this.getProfile)
-    console.log(this.getUserName)
+
 
   },
 
@@ -120,6 +120,8 @@ export default {
     getProfile: function () {
       return this.$store.getters.getProfile
     }
+
+    
   }
 }
 </script>

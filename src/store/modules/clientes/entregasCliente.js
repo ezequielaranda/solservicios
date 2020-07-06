@@ -19,24 +19,30 @@ const actions = {
   },
 
   ADD_ENTREGA: (context, entrega) => {
-    addEntregaCliente(entrega).then((responseEntregaCliente) => {
-      entrega.itemsEntrega.forEach(elementEntrega => {
-        elementEntrega.producto = elementEntrega.nombreProducto.id
-        elementEntrega.entregaCliente = responseEntregaCliente.data.id
-        context.dispatch('ADD_ITEM_ENTREGA', elementEntrega)
-      })
-      context.commit('ADD_ENTREGA', responseEntregaCliente.data)
+    return new Promise((resolve, reject) => {
+      addEntregaCliente(entrega).then(
+        (responseEntregaCliente) => {
+          entrega.itemsEntrega.forEach(elementEntrega => {
+            elementEntrega.producto = elementEntrega.nombreProducto.id
+            elementEntrega.entregaCliente = responseEntregaCliente.data.id
+            context.dispatch('ADD_ITEM_ENTREGA', elementEntrega)
+          })
+          context.commit('ADD_ENTREGA', responseEntregaCliente.data)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      )
     })
   },
 
   ADD_DEVOLUCION: (context, entrega) => {
-      entrega.itemsEntrega.forEach(elementEntrega => {
-        elementEntrega.producto = elementEntrega.nombreProducto.id
-        elementEntrega.entregaCliente = entrega.idEntregaCliente
-        context.dispatch('ADD_ITEM_DEVOLUCION', elementEntrega)
-      })
-      
-   
+    entrega.itemsEntrega.forEach(elementEntrega => {
+      elementEntrega.producto = elementEntrega.nombreProducto.id
+      elementEntrega.entregaCliente = entrega.idEntregaCliente
+      context.dispatch('ADD_ITEM_DEVOLUCION', elementEntrega)
+    })
   },
 
   ADD_ITEM_ENTREGA: (context, itemEntrega) => {
@@ -45,6 +51,7 @@ const actions = {
       dataStock.fecha_alta = responseItemEntrega.data.fecha_alta_item_entrega
       dataStock.cantidad = -responseItemEntrega.data.cantidad
       dataStock.estacion_kanban = 'ST_OUT'
+      dataStock.comments = 'Entrega a Cliente'
       dataStock.estado = 0
       dataStock.producto = responseItemEntrega.data.producto
       dataStock.itemEntrega = responseItemEntrega.data.id
@@ -59,6 +66,7 @@ const actions = {
       dataStock.fecha_alta = responseItemEntrega.data.fecha_alta_item_entrega
       dataStock.cantidad = responseItemEntrega.data.cantidad
       dataStock.estacion_kanban = 'ST_IN'
+      dataStock.comments = 'Devolución desde el cliente'
       dataStock.estado = 0
       dataStock.producto = responseItemEntrega.data.producto
       dataStock.itemEntrega = responseItemEntrega.data.id

@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-3">
+  <b-container fluid class="mt-3">
         <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaClientes">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -17,9 +17,6 @@
       </b-row>
   <div class="shadow border-top my-3"></div>
      <b-row>
-      <!--b-col cols="1">
-        <label>Filtro:</label>
-      </b-col-->
       <b-col cols="5">
         <b-form-group>
           <b-input-group size="sm">
@@ -60,6 +57,8 @@
       @filtered="onFiltered"
       empty-text="No se han encontrado Entregas a Cliente"
       class="shadow"
+      :tbody-transition-props="transProps"
+      primary-key="id"
     >
       <template v-slot:cell(actions)="row">
         <b-row class="justify-content-md-center">
@@ -84,7 +83,7 @@
              header-bg-variant="info"
              header-text-variant="light"
              footer-bg-variant="light"
-            footer-text-variant="light"
+             footer-text-variant="light"
              @hide="resetInfoModal">
 
       <b-row class="bg-light">
@@ -125,6 +124,10 @@ export default {
   name: 'listaEntregaClienteView',
   data () {
     return {
+      transProps: {
+          // Transition name
+          name: 'flip-list'
+        },
       listaEntregasCliente: [],
       loading: false,
       fields: [
@@ -156,14 +159,10 @@ export default {
     }
   },
   computed: {
-    sortOptions () {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => {
-          return { text: f.label, value: f.key }
-        })
-    },
+
+    rows () { return this.listaFacturasCompraAPI.length },
+    listaFacturasCompraAPI () { return this.$store.getters.FACTURASCOMPRA }
+
   },
 
   mounted () {
@@ -172,7 +171,9 @@ export default {
   },
 
   created () {
-        this.$store.dispatch('GET_ENTREGAS')
+        this.loading = true,
+        this.$store.dispatch('GET_ENTREGAS'),
+        this.loading = false
   },
 
   methods: {
@@ -218,7 +219,7 @@ export default {
     printReporte () {
       var doc = new JsPDF('p', 'pt')
       doc.setFontSize(12)
-      doc.text('SOL SERVICIOS S.A.', 40, 20)
+      doc.text(this.$store.getters.NOMBREEMPRESA, 40, 20)
       doc.line(40, 25, 560, 25)
       doc.setFontSize(10)
       doc.text('Planilla de Entrega de Productos a Cliente', 40, 40)
@@ -234,19 +235,22 @@ export default {
         { title: 'Cantidad', dataKey: 'cantidad' },
         { title: 'ENT / DEV', dataKey: 'esEntrega' }
       ]
-      doc.autoTable(columns, this.infoModal.content.itemsEntrega, {
-        margin: { top: 70 },
-        theme: 'grid',
-        allSectionHooks: true,
-        didParseCell: function (data) {
-          if (data.column.dataKey === 'esEntrega' && data.row.section === 'body') {
-            if (data.cell.raw === true) {
-              data.cell.text = 'ENTREGA'
-            } else {
-              data.cell.text = 'DEVOLUCIÓN'
+      doc.autoTable(
+        columns, 
+        this.infoModal.content.itemsEntrega, 
+        {
+          margin: { top: 70 },
+          theme: 'grid',
+          allSectionHooks: true,
+          didParseCell: function (data) {
+            if (data.column.dataKey === 'esEntrega' && data.row.section === 'body') {
+              if (data.cell.raw === true) {
+                data.cell.text = 'ENTREGA'
+              } else {
+                data.cell.text = 'DEVOLUCIÓN'
+              }
             }
           }
-        }
       })
       doc.save('reporte.pdf')
     }
@@ -259,6 +263,10 @@ export default {
   .thick {
     font-size: 20px;
     color: white;
+  }
+
+  table#tablaEntregaCliente .flip-list-move {
+    transition: transform 1s;
   }
 
 

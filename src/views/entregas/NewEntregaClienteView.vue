@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 <template>
-  <b-container class="mt-3">
+  <b-container fluid class="mt-3">
         <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaClientes">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -166,15 +166,21 @@ export default {
   },
 
   methods: {
+
     onSubmit (evt) {
       evt.preventDefault()
       if (this.stateCliente() && this.statePuntoLimpiezaCliente() && this.stateFechaEntrega) {
         if (this.form.itemsEntrega.length === 0) {
           swal('No se han agregado productos a la entrega.', '', 'error')
         } else {
-          this.$store.dispatch('ADD_ENTREGA', this.form)
-          swal('Entrega de Productos creada exitosamente!', '', 'success').then(
-            this.$router.push({ name: 'ListaEntregaClienteView' })
+          this.$store.dispatch('ADD_ENTREGA', this.form).then(
+            response => {
+                swal('Entrega de Productos creada exitosamente!', '', 'success')
+                this.$router.push({ name: 'ListaEntregaClienteView' })
+            },
+            error => {
+                swal('No se pudo crear la Entrega de Productos.', '', error.toISOString())
+            }
           )
         }
       } else {

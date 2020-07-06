@@ -1,5 +1,5 @@
 <template>
-<b-container class="mt-3">
+<b-container fluid class="mt-3">
         <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaProveedores">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -23,7 +23,7 @@
             </b-form-invalid-feedback>
       </b-form-group>
 
-      <b-form-group id="input-group-2" label="Fecha de Factura:" label-for="input-4" label-cols-sm="6" label-cols-lg="2">
+      <!--b-form-group id="input-group-2" label="Fecha de Factura:" label-for="input-4" label-cols-sm="6" label-cols-lg="2">
          <date-pick class="datePick"
              id="input-4"
              v-model="form.fecha_factura_compra"
@@ -32,6 +32,17 @@
         <b-form-invalid-feedback :state="this.stateFechaFactura()">
                 Elegir una fecha para la Factura.
          </b-form-invalid-feedback>
+      </b-form-group-->
+      <b-form-group id="input-group-2" label="Fecha de Factura:" label-for="input-4" label-cols-lg="2">
+          <b-form-datepicker id="input-4"
+                             v-model="form.fecha_factura_compra"
+                             :state="this.stateFechaFactura()"
+                             placeholder="Seleccionar fecha..."
+                             locale="es"
+                             ></b-form-datepicker>
+          <b-form-invalid-feedback :state="this.stateFechaFactura()">
+                 Definir una fecha para la Factura.
+          </b-form-invalid-feedback>
       </b-form-group>
 
      <div class="border-top my-3"></div>
@@ -50,9 +61,9 @@
           >
           <template v-slot:table-colgroup="scope">
             <col :style="{ width:'3%' }"/>
-            <col :style="{ width:'25%' }"/>
+            <col :style="{ width:'30%' }"/>
+            <col :style="{ width:'5%' }"/>
             <col :style="{ width:'6%' }"/>
-            <col :style="{ width:'8%' }"/>
             <col :style="{ width:'9%' }"/>
             <col :style="{ width:'4%' }"/>
             <col :style="{ width:'8%' }"/>
@@ -86,7 +97,7 @@
                    placeholder="">
              </b-form-input>
              <b-form-invalid-feedback :state="stateCantidad(row.item)">
-                   error.
+                   <b-icon-exclamation-triangle></b-icon-exclamation-triangle>
              </b-form-invalid-feedback>
           </template>
 
@@ -99,12 +110,12 @@
                   placeholder="">
             </b-form-input>
             <b-form-invalid-feedback :state="stateunidadMedida(row.item)">
-                   error.
+                   <b-icon-exclamation-triangle></b-icon-exclamation-triangle>
             </b-form-invalid-feedback>
           </template>
 
           <template v-slot:cell(precio_compra)="row">
-            <p v-if="editIndex !== row.index + 1"> {{ row.item.precio_compra }}</p>
+            <p v-if="editIndex !== row.index + 1"> {{ row.item.precio_compra | money }}</p>
             <b-form-input
                   size="sm"
                   v-if="editIndex === row.index + 1"
@@ -112,7 +123,7 @@
                   placeholder="">
             </b-form-input>
             <b-form-invalid-feedback :state="statePrecioUnitario(row.item)">
-                   error.
+                   <b-icon-exclamation-triangle></b-icon-exclamation-triangle>
             </b-form-invalid-feedback>
           </template>
 
@@ -153,15 +164,15 @@
           <template v-slot:cell(actions)="row">
             <b-row v-if="editIndex !== row.index + 1" class="justify-content-md-center">
               <b-button pill class="mr-2" size="sm" @click="edit(row.item, row.index + 1)" variant="info">
-                <b-icon icon="pencil"></b-icon>Editar</b-button>
+                <b-icon icon="pencil"></b-icon> Editar</b-button>
               <b-button pill size="sm" @click="remove(row.item, row.index + 1)" variant="outline-danger">
-                <b-icon icon="trash"></b-icon>Eliminar</b-button>
+                <b-icon icon="trash"></b-icon> Eliminar</b-button>
             </b-row>
              <b-row v-if="editIndex === row.index + 1" class="justify-content-md-center">
               <b-button pill class="mr-2" size="sm" @click="cancel(row.item)" variant="outline-secondary">
-                <b-icon icon="x-square"></b-icon>Cancelar</b-button>
+                <b-icon icon="x-square"></b-icon> Cancelar</b-button>
               <b-button pill size="sm" @click="save(row.item)" variant="outline-success">
-                <b-icon icon="check-box"></b-icon>Guardar</b-button>
+                <b-icon icon="check-box"></b-icon> Guardar</b-button>
             </b-row>
           </template>
 
@@ -234,7 +245,7 @@ export default {
       showForm: true,
       form: {
         proveedor: null,
-        usuario_alta: null,
+        usuario_alta: this.$store.getters.getUserID,
         fecha_factura_compra: '',
         fecha_alta_factura: '',
         importe_neto_gravado: null,
@@ -246,15 +257,15 @@ export default {
         itemsFactura: []
       },
       fields: [
-        { key: 'index', label: '#', sortable: false },
+        { key: 'index', label: '#', sortable: false, class: "text-center" },
         { key: 'productoObject', label: 'Producto', sortable: false },
-        { key: 'cantidad', label: 'cantidad', sortable: false },
-        { key: 'unidad_medida', label: 'unidad', sortable: false },
-        { key: 'precio_compra', label: 'precio unit.', sortable: false },
-        { key: 'bonificacion', label: 'bonif.', sortable: false },
-        { key: 'subtotal', label: 'subtotal', sortable: false },
-        { key: 'alicuotaIVA', label: '% IVA', sortable: false },
-        { key: 'total', label: 'total', sortable: false },
+        { key: 'cantidad', label: 'cantidad', sortable: false, class: "text-center" },
+        { key: 'unidad_medida', label: 'unidad', sortable: false, class: "text-center" },
+        { key: 'precio_compra', label: 'precio unit.', sortable: false, class: "text-center" },
+        { key: 'bonificacion', label: 'bonif.', sortable: false, class: "text-center" },
+        { key: 'subtotal', label: 'subtotal', sortable: false, class: "text-center" },
+        { key: 'alicuotaIVA', label: '% IVA', sortable: false, class: "text-center" },
+        { key: 'total', label: 'total', sortable: false, class: "text-center" },
         { key: 'actions', label: '' }
       ],
       editIndex: null,
@@ -271,17 +282,20 @@ export default {
       evt.preventDefault()
       if (this.stateProveedor() && this.stateFechaFactura()) {
         if (this.form.itemsFactura.length > 0) {
-          this.form.usuario_alta = 1
+          // this.form.usuario_alta = 1
           this.form.fecha_alta_factura = new Date().toISOString().substring(0, 10)
           this.form.importe_total = this.total
           this.form.importe_neto_gravado = this.allSubTotal
           this.form.iva21 = this.allIVAitems
-          this.$store.dispatch('ADD_FACTURA_COMPRA', this.form).then( response => {
+          this.$store.dispatch('ADD_FACTURA_COMPRA', this.form).then(
+            response => {
                 swal('Factura de Compra creada exitosamente!', '', 'success')
                 this.$router.push({ name: 'ListaFacturaCompraView' })
-              }, error => {
-                swal('No se pudo crear la nueva Factura de Compra.', '', 'error')
-              })
+            },
+            error => {
+                swal('No se pudo crear la nueva Factura de Compra.', '', error.toISOString())
+            }
+          )
         } else {
           swal('No se han agregado productos a la Factura.', '', 'error')
         }
@@ -330,6 +344,7 @@ export default {
           this.stateBonificacion(item) &&
           this.stateAlicuotaIVA(item) &&
           this.statePrecioUnitario(item)) {
+
         this.originalData = null
         this.editIndex = null
       } else {
@@ -349,11 +364,8 @@ export default {
     },
 
     fetchData () {
-
       this.listaProveedores = this.$store.getters.PROVEEDORES
       this.listaProductos = this.$store.getters.PRODUCTOS
-      // getProveedores().then(response => { this.listaProveedores = response.data }).catch(error => console.log(error))
-      // getProductos().then(response => { this.listaProductos = response.data }).catch(error => console.log(error))
     },
 
     stateProveedor () { return this.form.proveedor != null },
@@ -388,45 +400,5 @@ export default {
 <style>
   input[type="number"] {
     text-align: right;
-  }
-
-  .vdpComponent {
-    position: relative;
-    font-size: 10px;
-    color: #351717;
-  }
-
-  .vdpCell.today {
-      color: #6bc9da;
-  }
-
-  .datePick>input {
-      font-size: 14px;
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-      padding: 8px;
-      padding-right: 40px;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-      border-radius: 4px;
-      background: transparent;
-      border: 1px solid #e0e0e0;
-
-      outline: 0;
-  }
-
-  .style-chooser .vs__search::placeholder,
-  .style-chooser .vs__dropdown-toggle,
-  .style-chooser .vs__dropdown-menu {
-    background: #fcfcfc;
-    border-color: #0b9716;
-    color: #394066;
-  }
-
-  .style-chooser .vs__clear,
-  .style-chooser .vs__open-indicator {
-    fill: #0b9716;
   }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-5" style="max-width: 40rem;">
+  <b-container fluid class="mt-5" style="max-width: 40rem;">
     <b-card title="Acceso no permitido"
             sub-title="El usuario actual no tiene permisos suficientes para la funcionalidad solicitada."
             class="text-center">

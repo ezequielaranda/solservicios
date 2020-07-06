@@ -4,7 +4,8 @@ import {getProductos,
   deleteProducto,
   editProducto,
   getStockProductos,
-  getEstadosProducto } from '@/services/productos.js'
+  getEstadosProducto,
+  getPreciosProductos } from '@/services/productos.js'
 
 const state = {
   productos: [],
@@ -37,6 +38,16 @@ const actions = {
   GET_STOCK_PRODUCTOS: (context) => {
     return new Promise((resolve, reject) => {
       getStockProductos().then((response) => {
+        resolve(response.data)
+      }, (error) => {
+          reject(error)
+         }) 
+    })
+  },
+
+  GET_PRECIO_PRODUCTOS: (context) => {
+    return new Promise((resolve, reject) => {
+      getPreciosProductos().then((response) => {
         resolve(response.data)
       }, (error) => {
           reject(error)

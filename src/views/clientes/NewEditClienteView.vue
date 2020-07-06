@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-3">
+  <b-container fluid class="mt-3">
     <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaClientes">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -50,7 +50,7 @@
         <div class="shadow border-top my-3"></div>
         <b-row class="justify-content-md-center">
           <b-button pill size="sm" variant="outline-success" type="submit" class="mr-2">
-            <b-icon icon="check-box"></b-icon>Guardar</b-button>
+            <b-icon icon="check-box"></b-icon> Guardar</b-button>
           <b-button pill size="sm" variant="outline-secondary" type="reset" to="/listaClientes">Cancelar</b-button>
         </b-row>
       </b-form>
@@ -58,7 +58,6 @@
         <div class="shadow border-top my-3"></div>
             <b-button pill
                   variant="outline-success"
-
                   :to="{ name:'NewEditPuntoLimpiezaClienteView', params: {idCliente: this.form.id} }"
                   size="sm"
                   class="shadow mb-2">
@@ -79,9 +78,9 @@
                       variant="info"
                       class="mr-2"
                       :to="{ name:'NewEditPuntoLimpiezaClienteView', params: {idPuntoLimpiezaCliente: row.item.id} }">
-                      <b-icon icon="pencil"></b-icon>Editar</b-button>
+                      <b-icon icon="pencil"></b-icon> Editar</b-button>
             <b-button pill size="sm" variant="outline-danger" @click='deletePuntoCliente(row.item.id)'><b-icon icon="trash"></b-icon>
-            Eliminar</b-button>
+             Eliminar</b-button>
           </template>
         </b-table>
       </div>
@@ -173,12 +172,14 @@ export default {
         .then((value) => {
           switch (value) {
             case 'catch':
-              this.$store.dispatch('DELETE_PUNTO_CLIENTE', puntoClienteId).then( response => {
-                this.listaPuntosLimpiezaCliente = this.$store.getters.PUNTO_CLIENTE_BY_CLIENTE_ID(this.$route.params.idCliente)
-                swal('Punto de Limpieza de Cliente eliminado exitosamente.', '', 'success')
-              }, error => {
-                swal('El Punto de Limpieza de Cliente seleccionado no puede ser eliminado.', '', 'error')
-              })
+              this.$store.dispatch('DELETE_PUNTO_CLIENTE', puntoClienteId).then( 
+                response => {
+                  this.listaPuntosLimpiezaCliente = this.$store.getters.PUNTO_CLIENTE_BY_CLIENTE_ID(this.$route.params.idCliente)
+                  swal('Punto de Limpieza de Cliente eliminado exitosamente.', '', 'success')
+                },
+                error => {
+                  swal('El Punto de Limpieza de Cliente seleccionado no puede ser eliminado.', '', 'error')
+                })
               break
           }
         })

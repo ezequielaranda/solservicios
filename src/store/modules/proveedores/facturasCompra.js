@@ -22,8 +22,11 @@ const actions = {
       addFacturaCompra(data).then( (responseFacturaCompra) => {
         data.itemsFactura.forEach(element => {
           element.producto = element.productoObject.id
+          // element.cantidad = element.cantidad * element.productoObject.factor_multiplicacion
           element.facturaCompra = responseFacturaCompra.data.id
-          context.dispatch('ADD_ITEM_FACTURA_COMPRA', {'data':element, 'fecha':data.fecha_factura_compra})
+          context.dispatch('ADD_ITEM_FACTURA_COMPRA', {'data':element, 
+                                                       'fecha':data.fecha_factura_compra,
+                                                       'factor_multi': element.productoObject.factor_multiplicacion })
         })
         context.commit('ADD_FACTURA_COMPRA', responseFacturaCompra.data)
         resolve()
@@ -35,8 +38,9 @@ const actions = {
     addItemFacturaCompra(payload.data).then((responseItemFacturaCompra) => {
       let dataStock = {}
       dataStock.fecha_alta = payload.fecha
-      dataStock.cantidad = responseItemFacturaCompra.data.cantidad
+      dataStock.cantidad = responseItemFacturaCompra.data.cantidad * payload.factor_multi
       dataStock.estacion_kanban = 'ST_IN'
+      dataStock.comments = "Carga de Factura de Compra"
       dataStock.estado = 0
       dataStock.producto = responseItemFacturaCompra.data.producto
       dataStock.itemFactura = responseItemFacturaCompra.data.id

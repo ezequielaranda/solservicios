@@ -3,10 +3,10 @@ from rest_framework import serializers
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-class Message(models.Model):
-    subject = models.CharField(max_length=200)
-    body = models.TextField()
-
+class Empresa(models.Model):
+    nombre = models.CharField(max_length=150, null=True)
+    domicilio = models.CharField(max_length=150, null=True)
+    ciudad = models.CharField(max_length=150, null=True)
 
 class Estado(models.Model):
     codigo = models.CharField(max_length=8, unique=True)
@@ -18,7 +18,7 @@ class Estado(models.Model):
 class Cliente(models.Model):
     nombre_completo = models.CharField(max_length=50)
     domicilio = models.CharField(max_length=60)
-    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.nombre_completo
@@ -44,7 +44,7 @@ class Proveedor(models.Model):
     )
     condicionIVA = models.CharField(max_length=2,choices=CONDICION_IVA_CHOICES)
     cuit = models.CharField(max_length=11)
-    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.nombre_completo
@@ -53,6 +53,7 @@ class Proveedor(models.Model):
 class TipoProducto(models.Model):
     descripcion = models.CharField(max_length=50)
     codigo = models.CharField(max_length=8, unique=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
     def __str__(self):
         return self.descripcion
 
@@ -60,6 +61,7 @@ class TipoProducto(models.Model):
 class FamiliaProducto(models.Model):
     descripcion = models.CharField(max_length=50)
     codigo = models.CharField(max_length=8, unique=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
     def __str__(self):
         return self.descripcion
 
@@ -98,7 +100,7 @@ class EntregaCliente(models.Model):
     fecha_alta_entrega = models.DateField(auto_now=True)
     punto_limpieza_cliente = models.ForeignKey(PuntoLimpiezaCliente, on_delete=models.PROTECT)
     usuario_alta = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 class ItemEntregaCliente(models.Model):
     entregaCliente = models.ForeignKey(EntregaCliente, related_name='itemsEntrega', on_delete=models.CASCADE)
@@ -106,6 +108,7 @@ class ItemEntregaCliente(models.Model):
     producto = models.ForeignKey(Producto, related_name='productosEntrega', on_delete=models.PROTECT)
     cantidad = models.IntegerField()
     esEntrega = models.BooleanField()
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 # Definición de las FACTURAS de COMPRA
 class FacturaCompra(models.Model):
@@ -119,8 +122,7 @@ class FacturaCompra(models.Model):
     iva21 = models.FloatField()
     iva105 = models.FloatField()
     iva0 = models.FloatField()
-    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
-
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 class ItemsFactura(models.Model):
     facturaCompra = models.ForeignKey(FacturaCompra, related_name='itemsFactura', on_delete=models.CASCADE)
@@ -129,28 +131,20 @@ class ItemsFactura(models.Model):
     precio_compra = models.FloatField()
     unidad_medida = models.CharField(max_length=10)
     alicuotaIVA = models.FloatField()
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
-
-# Definición de las ORDENES de COMPRA
 class OrdenCompra(models.Model):
     fecha_orden_compra = models.DateField()
     fecha_alta_orden = models.DateField()
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE)
     usuario_alta = models.ForeignKey(User, on_delete=models.DO_NOTHING)
-    productos = models.ManyToManyField(
-        Producto,
-        through='ItemsOrdenCompra',
-        through_fields=('ordenCompra', 'producto'),
-    )
-    #estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 class ItemsOrdenCompra(models.Model):
-    ordenCompra = models.ForeignKey(OrdenCompra, on_delete=models.CASCADE)
+    ordenCompra = models.ForeignKey(OrdenCompra, related_name='itemsOrdenCompra', on_delete=models.CASCADE)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
-
-
-
+    estado = models.ForeignKey(Estado, on_delete=models.SET_NULL, null=True)
 
 # Definición del STOCK de los productos
 class StockHistoricoProducto(models.Model):
@@ -168,7 +162,7 @@ class StockHistoricoProducto(models.Model):
         )
     estacion_kanban = models.CharField(null=True, max_length=6, choices=KANBAN_STATIONS)
     estado = models.IntegerField(null=True)
-
+    comments = models.CharField(null=True, max_length=100)
     
 # Definición de los PRECIOS de los productos
 class PrecioHistoricoProducto(models.Model):

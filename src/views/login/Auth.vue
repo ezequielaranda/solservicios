@@ -1,34 +1,38 @@
 <template>
-  <b-container class="mt-5" style="max-width: 40rem;">
-    <b-card title="Gestión de STOCK - SOL Servicios S.A." align-h="center">
-      <div class="shadow border-top my-3"></div>
-      <b-form @submit="onSubmit" @reset="onReset">
-      <b-form-group id="input-group-1" label="Nombre de Usuario:" label-for="input-1">
-        <b-form-input
-          id="input-1"
-          v-model="credentials.username"
-          type="text"
-          required
-          placeholder="Ingrese su nombre de usuario"
-        ></b-form-input>
-      </b-form-group>
+  <b-container fluid class="bg-light" >
+    <!--b-card title="Gestión Integral de Operaciones" align-h="center">
+      <div class="shadow border-top my-3"></div-->
+      
+      <b-form class="mt-5 form-signin" @submit="onSubmit" @reset="onReset">
+        <!--img src='@/assets/sol-servicios-logo-b.png' class="mb-4" style="width: 130px" /-->
+        <b-img class="mb-3" style="width: 120px" center src="http://www.solservicios.com.ar/img/sol-servicios-logo-b.png"></b-img>
+        <b-form-group id="input-group-1" label="Nombre de Usuario:" label-for="input-1">
+          <b-form-input
+            id="input-1"
+            v-model="credentials.username"
+            type="text"
+            required
+            placeholder="Ingrese su nombre de usuario"
+          ></b-form-input>
+        </b-form-group>
 
-      <b-form-group id="input-group-2" label="Contraseña:" label-for="input-2">
-        <b-form-input
-          id="input-2"
-          v-model="credentials.password"
-          required
-          placeholder="Ingrese su contraseña"
-          type="password"
-        ></b-form-input>
-      </b-form-group>
+        <b-form-group id="input-group-2" label="Contraseña:" label-for="input-2">
+          <b-form-input
+            id="input-2"
+            v-model="credentials.password"
+            required
+            placeholder="Ingrese su contraseña"
+            type="password"
+          ></b-form-input>
+        </b-form-group>
+        
         <div class="shadow border-top my-3"></div>
-         <b-row align-h="center">
-          <b-button pill size="sm" type="submit" variant="outline-success" class="shadow mr-2">Aceptar</b-button>
-          <b-button pill size="sm" type="reset" variant="outline-secondary" class="shadow ">Cancelar</b-button>
+        <b-row align-h="center">
+          <b-button pill size="sm" type="submit" variant="outline-success" class="shadow mr-2"> Ingresar</b-button>
+          <!--b-button pill size="sm" type="reset" variant="outline-secondary" class="shadow ">Cancelar</b-button-->
         </b-row>
-    </b-form>
-    </b-card>
+      </b-form>
+    <!--/b-card-->
   </b-container>
 
 </template>
@@ -76,15 +80,17 @@ export default {
               this.$store.dispatch('GET_FAMILIAS_PRODUCTO')
               this.$store.dispatch('GET_ESTADOS_PRODUCTO')
               this.$store.dispatch('GET_PRODUCTOS')
-              // this.$store.dispatch('GET_FACTURASCOMPRA')
+              this.$store.dispatch('GET_FACTURASCOMPRA')
               this.$store.dispatch('GET_ENTREGAS')
-                this.$router.push('/')
+              this.$store.dispatch('GET_DATOSEMPRESA')
+              
+              this.$router.push('/')
               
               
             })
         .catch(error => {
           this.logout()
-          localStorage.removeItem('user-token')
+          // localStorage.removeItem('user-token')
           swal({
             type: 'warning',
             title: 'Error',
@@ -99,3 +105,18 @@ export default {
 
 }
 </script>
+
+<style>
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+
+  body {
+    background-color: #f5f5f5;
+    display:flex;
+   
+  }
+</style>

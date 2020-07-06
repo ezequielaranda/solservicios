@@ -10,7 +10,10 @@ proveedores: []
 
 const actions = {
 GET_PROVEEDORES: (context) => {
-getProveedores().then((response) => { context.commit('SET_PROVEEDORES', response.data) })
+  getProveedores().then(
+    (response) => { 
+      context.commit('SET_PROVEEDORES', response.data) 
+    })
 },
 
 ADD_PROVEEDOR: (context, data) => {

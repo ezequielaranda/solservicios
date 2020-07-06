@@ -1,13 +1,13 @@
 <template>
     <b-container id="app" fluid>
-     <b-row>
-        <navigation />
+     <b-row class="navigation-bar">
+        <navigation v-if="isAuthenticated" />
      </b-row>
     <b-row class="main-container">
-      <router-view  />
+      <router-view />
     </b-row>
-  <div class="sq-footer shadow">
-    Salvador del Carril 2322 (S3004FQF) Santa Fe, Argentina - <a target="_blank" href="http://www.solservicios.com.ar"> - SOL Servicios S.A.</a>
+  <div v-if="isAuthenticated" class="sq-footer shadow">
+    {{getDomicilioEmpresa()}} , Argentina - <a target="_blank" href="http://www.XXXXXXXXXXXXXX.com.ar"> - {{getNombreEmpresa()}}</a>
   </div>
 
   </b-container>
@@ -25,6 +25,13 @@ export default {
   data () {
     return {}
   },
+  
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.getters.isAuthenticated
+    }
+  },
+  
 
   created: function () {
     if (!this.$store.getters.isAuthenticated || this.$store.getters.authStatus === '') { 
@@ -33,7 +40,23 @@ export default {
   },
 
   methods: {
-    logout () { this.$store.dispatch('AUTH_LOGOUT').then(() => this.$router.push('/auth')) }
+    logout () { 
+      this.$store.dispatch('AUTH_LOGOUT').then(
+        () => this.$router.push('/auth')
+      )
+    },
+    
+    getDomicilioEmpresa() { 
+      return this.$store.getters.DOMICILIOEMPRESA
+    },
+
+    getNombreEmpresa() { 
+      return this.$store.getters.NOMBREEMPRESA
+    },
+
+    getCiudadEmpresa() { 
+      return this.$store.getters.CIUDADEMPRESA
+    },
   }
 }
 
@@ -67,8 +90,18 @@ body {
   line-height: 1.1;
 }
 
+#app {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.navigation-bar {
+  background-color: #ffffff;
+}
+
 .main-container {
   min-height: calc(100vh - 130px);
+  background-color: #ffffff;
 }
 
 .sq-footer {

@@ -1,6 +1,6 @@
 <template>
 
-   <b-container class="mt-3">
+   <b-container fluid class="mt-3">
           <b-breadcrumb class="shadow">
             <b-breadcrumb-item active href="#home">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -113,11 +113,14 @@ export default {
         .then((value) => {
           switch (value) {
             case 'catch':
-              this.$store.dispatch('DELETE_CLIENTE', clienteId).then( response => {
-                swal('Cliente eliminado exitosamente.', '', 'success')
-              }, error => {
-                swal('El Cliente seleccionado no puede ser eliminado.', '', 'error')
-              })
+              this.$store.dispatch('DELETE_CLIENTE', clienteId).then( 
+                response => {
+                  swal('Cliente eliminado exitosamente.', '', 'success')
+                },
+                error => {
+                  swal('El Cliente seleccionado no puede ser eliminado.', '', 'error')
+                }
+              )
               break
           }
         })
@@ -126,7 +129,7 @@ export default {
     printReporte () {
       var doc = new JsPDF('p', 'pt')
       doc.setFontSize(10)
-      doc.text('SOL SERVICIOS S.A.', 40, 20)
+      doc.text(this.$store.getters.NOMBREEMPRESA, 40, 20)
       doc.line(40, 25, 560, 25)
       doc.setFontSize(10)
       doc.text('Lista de Clientes', 40, 40)
@@ -142,20 +145,31 @@ export default {
         { title: 'Domicilio', dataKey: 'domicilio' }
         // { title: 'ENT / DEV', dataKey: 'esEntrega' }
       ]
-      doc.autoTable(columns, this.clientes, {
-        margin: { top: 70 },
-        theme: 'grid',
-        allSectionHooks: true
-        // didParseCell: function (data) {
-        //   if (data.column.dataKey === 'esEntrega' && data.row.section === 'body') {
-        //     if (data.cell.raw === true) {
-        //       data.cell.text = 'ENTREGA'
-        //     } else {
-        //       data.cell.text = 'DEVOLUCIÓN'
-        //     }
-        //   }
-        // }
-      })
+      doc.autoTable(
+        columns,
+        this.clientes, 
+        { margin: { top: 70 },
+          theme: 'grid',
+          allSectionHooks: true,
+          //didDrawCell: function (data) {
+          //  if (data.row.section === 'body') {
+          //    doc.autoTable({
+          //      startY: data.cell.y + 10,
+          //     margin: { left: data.cell.x + 10 },
+          //      tableWidth: data.cell.width - 4,
+          //      styles: {
+          //        maxCellHeight: 4,
+          //      },
+          //      columns: [
+          //        { dataKey: 'id', header: 'Punto de Limpieza' },
+          //        { dataKey: 'name', header: 'Domicilio' },
+          //      ],
+          //      body: [],
+          //    })
+          //  }
+          //},
+        },
+      )
       doc.save('lista_de_clientes.pdf')
     }
   }

@@ -8,13 +8,13 @@ from rest_framework import generics, permissions, viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
-from .models import (Estado, Cliente, EntregaCliente, FacturaCompra, FamiliaProducto,
-                     ItemEntregaCliente, ItemsFactura, Message,
+from .models import (Empresa, Estado, Cliente, EntregaCliente, FacturaCompra, FamiliaProducto,
+                     ItemEntregaCliente, ItemsFactura, 
                      PrecioHistoricoProducto, Producto, Proveedor,
                      PuntoLimpiezaCliente, StockHistoricoProducto,
                      TipoProducto)
 from .serializers import (
-    MessageSerializer, PrecioHistoricoProductoSerializer, ProductoSerializer, EntregaClienteSerializer,
+    EmpresaSerializer, PrecioHistoricoProductoSerializer, ProductoSerializer, EntregaClienteSerializer,
     StockHistoricoProductoSerializer, UserSerializer, ProductoStockSerializer, ProductoPreciosSerializer,
     EstadoSerializer, TipoProductoSerializer, FamiliaProductoSerializer, ClienteSerializer, PuntoLimpiezaClienteSerializer,
     ProductoReporteConsumoSerializer, ProveedorSerializer, FacturaCompraSerializer, FacturaCompraCreateSerializer,
@@ -29,13 +29,6 @@ class DistinctSum(Sum):
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
 
 
-class MessageViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows messages to be viewed or edited.
-    """
-    queryset = Message.objects.all()
-    serializer_class = MessageSerializer
-
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     def get_queryset(self):
@@ -49,6 +42,10 @@ class PrecioHistoricoProductoViewSet(viewsets.ModelViewSet):
     queryset = PrecioHistoricoProducto.objects.all()
     serializer_class = PrecioHistoricoProductoSerializer
 
+class EmpresaViewSet(viewsets.ModelViewSet):
+    queryset = Empresa.objects.all()
+    serializer_class = EmpresaSerializer
+
 class EntregaClienteViewSet(viewsets.ModelViewSet):
     queryset = EntregaCliente.objects.all()
     serializer_class = EntregaClienteSerializer
@@ -56,6 +53,18 @@ class EntregaClienteViewSet(viewsets.ModelViewSet):
 class StockHistoricoProductoViewSet(viewsets.ModelViewSet):
     queryset = StockHistoricoProducto.objects.all()
     serializer_class = StockHistoricoProductoSerializer
+
+class StockHistoricoByProductoEstadoViewSet(viewsets.ModelViewSet):
+    serializer_class = StockHistoricoProductoSerializer
+    def get_queryset(self):
+        queryset = StockHistoricoProducto.objects.all()
+        producto = self.request.query_params.get('producto', None)
+        estado = self.request.query_params.get('estado', None)
+        if producto is not None:
+            queryset = queryset.filter(producto=producto)
+        if estado is not None:
+            queryset = queryset.filter(estado=estado)
+        return queryset
 
 class ProductoStockViewSet(viewsets.ModelViewSet):
     queryset = Producto.objects.filter(stocks__estacion_kanban__startswith='ST_', stocks__estado='0'
@@ -87,8 +96,9 @@ class FamiliaProductoViewSet(viewsets.ModelViewSet):
     serializer_class = FamiliaProductoSerializer 
 
 class ClienteViewSet(viewsets.ModelViewSet):
-    queryset = Cliente.objects.all()
+    queryset = Cliente.objects.all().order_by('nombre_completo')
     serializer_class = ClienteSerializer
+    
 
 class PuntoLimpiezaClienteViewSet(viewsets.ModelViewSet):
     serializer_class = PuntoLimpiezaClienteSerializer
@@ -98,6 +108,8 @@ class PuntoLimpiezaClienteViewSet(viewsets.ModelViewSet):
         if cliente is not None:
             queryset = queryset.filter(cliente=cliente)
         return queryset
+
+
 
 class ProductoReporteConsumoViewSet(viewsets.ModelViewSet):
     serializer_class = ProductoReporteConsumoSerializer

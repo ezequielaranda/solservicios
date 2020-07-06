@@ -1,11 +1,11 @@
-from .models import Message, Estado, TipoProducto, FamiliaProducto, FacturaCompra, EntregaCliente, PrecioHistoricoProducto, StockHistoricoProducto, Producto, Proveedor, Accion, Cliente, PuntoLimpiezaCliente, Proveedor, ItemsFactura, ItemEntregaCliente
+from .models import Empresa, Estado, TipoProducto, FamiliaProducto, FacturaCompra, EntregaCliente, PrecioHistoricoProducto, StockHistoricoProducto, Producto, Proveedor, Accion, Cliente, PuntoLimpiezaCliente, Proveedor, ItemsFactura, ItemEntregaCliente
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-class MessageSerializer(serializers.HyperlinkedModelSerializer):
+class EmpresaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Message
-        fields = ('url', 'subject', 'body', 'pk')
+        model = Empresa
+        fields = '__all__'
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

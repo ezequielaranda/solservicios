@@ -1,11 +1,12 @@
 from django.contrib import admin
 
-from .models import Estado, PrecioHistoricoProducto, ItemEntregaCliente, EntregaCliente, Cliente, Producto, Proveedor, TipoProducto, FamiliaProducto, StockHistoricoProducto, PuntoLimpiezaCliente, FacturaCompra, ItemsFactura, Usuario, Accion, AccionesRealizadasUsuario
+from .models import Empresa, Estado, PrecioHistoricoProducto, ItemEntregaCliente, EntregaCliente, Cliente, Producto, Proveedor, TipoProducto, FamiliaProducto, StockHistoricoProducto, PuntoLimpiezaCliente, FacturaCompra, ItemsFactura, Usuario, Accion, AccionesRealizadasUsuario
 
 admin.site.register(Producto)
 admin.site.register(Proveedor)
 admin.site.register(TipoProducto)
 admin.site.register(Estado)
+admin.site.register(Empresa)
 admin.site.register(FamiliaProducto)
 admin.site.register(StockHistoricoProducto)
 admin.site.register(PuntoLimpiezaCliente)

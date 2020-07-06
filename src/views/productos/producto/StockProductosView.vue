@@ -1,5 +1,5 @@
 <template>
-   <b-container class="mt-3">
+   <b-container fluid class="mt-3">
          <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/productos">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -46,8 +46,11 @@
         <template v-slot:cell(action)="row" >
           <b-row class="justify-content-md-center">
             <b-button pill size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-              <b-icon icon="plus"></b-icon>Agregar movimiento manual de stock
-          </b-button>
+                <b-icon icon="plus"></b-icon>Agregar movimiento manual de stock
+            </b-button>
+            <b-button pill size="sm" @click="infoVer(row.item, row.index, $event.target)" class="mr-1">
+                <b-icon icon="plus"></b-icon>Ver movimientos
+            </b-button>
           </b-row>
         </template>
         <template v-slot:table-busy>
@@ -61,8 +64,13 @@
       <b-modal
           size="lg"
           :id="infoModal.id"
+          centered
           ref="modal"
           title="Movimiento manual de Stock"
+          header-bg-variant="info"
+          header-text-variant="light"
+          footer-bg-variant="light"
+          footer-text-variant="light"
           @hide="resetInfoModal"
         >
         <b-input-group size="sm" class="mb-1">
@@ -105,11 +113,46 @@
               ></b-form-input>
             </b-form-group>
           </form>
-
+        <template v-slot:modal-footer>
+          <div align="center" class="w-100">
+            <b-button class=" mr-2" pill variant="outline-success" size="sm" @click="handleOk"> <b-icon icon="check-box"></b-icon>Aceptar</b-button>
+            <b-button class=" mr-2" pill variant="outline-secondary" size="sm" @click="resetInfoModal">Cerrar</b-button>
+          </div>
+        </template>
+      </b-modal>
+  
+   <b-modal :id="stockModal.id"
+          title="Movimientos de stock por Producto"
+          size="xl"
+          centered
+          header-bg-variant="info"
+          header-text-variant="light"
+          footer-bg-variant="light"
+          footer-text-variant="light"
+          @hide="resetStockModal"
+        >
+        <b-input-group size="sm" class="mb-1">
+          <template v-slot:prepend>
+            <b-input-group-text class="bg-info"><strong class="text-white">Producto:</strong></b-input-group-text>
+          </template>
+          <b-form-input class="bg-white text-left" disabled :value="stockModal.content.nombre_completo"></b-form-input>
+        </b-input-group>
+      <div class="shadow border-top my-3"></div>
+      <b-table small
+               empty-text="No existen movimientos de stock cargados en la Base de Datos."
+               show-empty
+               :busy="isBusy"
+               head-row-variant="secondary"
+               class="shadow"
+               :items="stockModal.stockHistorico"
+               :fields="fieldsStockModal">
+        <template v-slot:cell(importe)="data">
+          <b class="text-success">{{ data.value | money }}</b>
+        </template>
+      </b-table>
        <template v-slot:modal-footer>
-        <div align="center" class="w-100">
-          <b-button class=" mr-2" pill variant="outline-success" size="sm" @click="handleOk"> <b-icon icon="check-box"></b-icon>Aceptar</b-button>
-          <b-button class=" mr-2" pill variant="outline-secondary" size="sm" @click="resetInfoModal">Cerrar</b-button>
+        <div align="right" class="w-100">
+          <b-button pill variant="secondary" size="sm" @click="resetStockModal">Cerrar</b-button>
         </div>
       </template>
     </b-modal>
@@ -118,6 +161,7 @@
 </template>
 
 <script>
+import { getStockHistoricoByIdProductoEstado } from '@/services/productos.js'
 import JsPDF from 'jspdf'
 import 'jspdf-autotable'
 export default {
@@ -134,6 +178,12 @@ export default {
         { key: 'total_stock', label: 'Stock Actual de Producto', class: 'text-center' },
         { key: 'action', label: '' }
       ],
+      fieldsStockModal: [
+        { key: 'fecha_alta', label: 'Fecha de Carga', sortable: true, class: 'text-center' },
+        { key: 'cantidad', label: 'Cantidad', class: 'text-center', sortable: true },
+        { key: 'estacion_kanban', label: 'Tipo de movimiento', formatter: (value, key, item) => { return value==='ST_IN' ? 'Entrada' : 'Salida' },class: 'text-center', sortable: true },
+        { key: 'comments', label: 'Detalles', class: 'text-center' }
+      ],
       optionsMovimiento: [
         { text: 'ENTRADA de stock', value: 'ST_IN' },
         { text: 'SALIDA de stock', value: 'ST_OUT' }
@@ -143,6 +193,11 @@ export default {
       infoModal: {
         id: 'info-modal',
         content: ''
+      },
+      stockModal: {
+        id: 'stock-modal',
+        content: '',
+        stockHistorico: []
       }
     }
   },
@@ -175,28 +230,30 @@ export default {
       this.infoModal.content = ''
       this.$root.$emit('bv::hide::modal', this.infoModal.id)
     },
+    resetStockModal () {
+      this.stockModal.content = ''
+      this.stockModal.stockHistorico = []
+      this.$root.$emit('bv::hide::modal', this.stockModal.id)
+    },
     handleOk (bvModalEvt) {
       bvModalEvt.preventDefault()
-      this.handleSubmit()
-    },
-    handleSubmit () {
       if (!this.checkFormValidity()) { return }
-
-      let dataStock = {}
-      dataStock.fecha_alta = new Date().toISOString().substring(0, 10)
-      dataStock.cantidad = this.tipoMovimiento === 'ST_IN' ? this.cantidadManual : -this.cantidadManual
-      dataStock.estacion_kanban = this.tipoMovimiento
-      dataStock.estado = 0
-      dataStock.producto = this.infoModal.content.id
-      dataStock.itemFactura = null
-      dataStock.itemEntrega = null
-      console.log(dataStock)
-      this.$store.dispatch('ADD_STOCK_ITEM_FACTURA_COMPRA', dataStock)
-      // addStockItemFacturaCompra(dataStock)
-      this.$nextTick(() => {
-        this.fetchData()
-        this.$root.$emit('bv::hide::modal', this.infoModal.id)
-      })
+        let dataStock = {}
+        dataStock.fecha_alta = new Date().toISOString().substring(0, 10)
+        dataStock.cantidad = this.tipoMovimiento === 'ST_IN' ? this.cantidadManual : -this.cantidadManual
+        dataStock.estacion_kanban = this.tipoMovimiento
+        dataStock.comments = 'Correción Manual de Stock'
+        dataStock.estado = 0
+        dataStock.producto = this.infoModal.content.id
+        dataStock.itemFactura = null
+        dataStock.itemEntrega = null
+        console.log(dataStock)
+        this.$store.dispatch('ADD_STOCK_ITEM_FACTURA_COMPRA', dataStock)
+        // addStockItemFacturaCompra(dataStock)
+        this.$nextTick(() => {
+          this.fetchData()
+          this.$root.$emit('bv::hide::modal', this.infoModal.id)
+        })
     },
 
     info (item, index, button) {
@@ -204,10 +261,18 @@ export default {
       this.$root.$emit('bv::show::modal', this.infoModal.id, button)
     },
 
+    infoVer (item, index, button) {
+      this.stockModal.content = item
+      getStockHistoricoByIdProductoEstado(item.id, 0).then((response) => {
+        this.stockModal.stockHistorico = response.data
+      })
+      this.$root.$emit('bv::show::modal', this.stockModal.id, button)
+    },
+
     printReporte () {
       var doc = new JsPDF('p', 'pt')
       doc.setFontSize(10)
-      doc.text('SOL SERVICIOS S.A.', 40, 20)
+      doc.text(this.$store.getters.NOMBREEMPRESA, 40, 20)
       doc.line(40, 25, 560, 25)
       doc.setFontSize(10)
       doc.text('Listado de Stock de Productos', 40, 40)

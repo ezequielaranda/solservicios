@@ -1,5 +1,5 @@
 <template>
-   <b-container class="mt-3">
+   <b-container fluid class="mt-3">
          <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/productos">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -74,15 +74,7 @@
           </template>
           <b-form-input class="bg-white text-left" disabled :value="infoModal.content.nombre_proveedor"></b-form-input>
         </b-input-group>
-
-        <div class="shadow border-top my-3"></div>
-        <!--b-input-group size="sm" class="mb-1">
-          <template v-slot:prepend>
-            <b-input-group-text class="bg-info"><strong class="text-white">Último Precio:</strong></b-input-group-text>
-          </template>
-          <b-form-input class="bg-light text-right" disabled :value="infoModal.ultimoPrecio | money"></b-form-input>
-        </b-input-group-->
-
+      <div class="shadow border-top my-3"></div>
       <b-table small
                empty-text="No existen precios de productos cargados en la Base de Datos."
                show-empty
@@ -100,17 +92,12 @@
           <b-button pill variant="secondary" size="sm" @click="resetInfoModal">Cerrar</b-button>
         </div>
       </template>
-
-
-
     </b-modal>
 
     </b-container>
 </template>
 
 <script>
-import { getPreciosProductos } from '@/services/productos.js'
-// import { addStockItemFacturaCompra } from '@/services/api/facturasCompra.js'
 export default {
   filters: {
     money: (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value)
@@ -150,14 +137,11 @@ export default {
 
     fetchData () {
       this.isBusy = true
-      getPreciosProductos()
-        .then(response => {
+      this.$store.dispatch('GET_PRECIO_PRODUCTOS').then((value) => {
           this.isBusy = false
-          this.listaProductos = response.data
+          this.listaProductos = value
           this.rows = this.listaProductos.length
-        })
-        .catch(error => console.log(error))
-        .finally(() => { })
+     }).catch(error => console.log(error))
     },
 
     resetInfoModal () {
@@ -168,11 +152,8 @@ export default {
     },
     handleOk (bvModalEvt) {
       bvModalEvt.preventDefault()
-      this.handleSubmit()
     },
-    handleSubmit () {
 
-    },
     info (item, index, button) {
       this.infoModal.content = item
       if (item.preciosProducto.length > 0) {
@@ -180,7 +161,6 @@ export default {
         // this.infoModal.ultimoPrecio = arrayPrecios.splice(0, 1)[0].importe
         this.infoModal.preciosHistoricos = arrayPrecios
       }
-
       this.$root.$emit('bv::show::modal', this.infoModal.id, button)
     }
 

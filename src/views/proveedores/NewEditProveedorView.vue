@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-3">
+  <b-container fluid class="mt-3">
     <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaProveedores">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -133,11 +133,6 @@
         ></b-form-input>
       </b-form-group>
       <b-form-group id="input-group-fecha" label="Fecha de Inicio de Actividades:" label-for="input-8" label-cols-lg="3">
-          <!--date-pick class="datePick"
-              id="input-8"
-              v-model="form.fecha_inicio_actividades"
-              :format="format"
-          ></date-pick-->
           <b-form-datepicker id="input-8"
                              v-model="form.fecha_inicio_actividades"
                              :state="stateFechaInicioActividades"
@@ -147,7 +142,7 @@
           <b-form-invalid-feedback :state="stateFechaInicioActividades">
                  Definir una fecha de inicio de actividades del proveedor.
           </b-form-invalid-feedback>
-        </b-form-group>
+      </b-form-group>
 
 
         
@@ -156,7 +151,7 @@
         <div class="shadow border-top my-3"></div>
         <b-row class="justify-content-md-center">
           <b-button pill size="sm" variant="outline-success" type="submit" class="mr-2">
-            <b-icon icon="check-box"></b-icon>Guardar Proveedor</b-button>
+            <b-icon icon="check-box"></b-icon> Guardar Proveedor</b-button>
           <b-button pill size="sm" variant="outline-secondary" type="reset" to="/listaProveedores">Cancelar</b-button>
         </b-row>
       </b-form>

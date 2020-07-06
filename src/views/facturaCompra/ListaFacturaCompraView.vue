@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-3 body">
+  <b-container fluid class="mt-3 body">
         <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaProveedores">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -250,7 +250,7 @@ export default {
       doc.setFontSize(12)
       doc.rect(40, 27, 130, 18, 'F')
       doc.setTextColor(255)
-      doc.text('SOL SERVICIOS S.A.', 43, 40)
+      doc.text(this.$store.getters.NOMBREEMPRESA, 43, 40)
       //
       doc.line(40, 49, 556, 49)
       doc.line(40, 153, 556, 153)

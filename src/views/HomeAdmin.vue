@@ -22,7 +22,7 @@
                 text-variant="dark" 
                 header="Facturas en los últimos 30 días" 
                 class="shadow">
-          <b-badge> {{this.getUltimasFacturas(10)}} </b-badge>
+          <b-badge> {{this.getUltimasFacturas(30)}} </b-badge>
         </b-card>
       </b-card-group>
     </b-container>
@@ -40,13 +40,15 @@ export default {
   },
   data () {
     return {
-
+      
     }
   },
 
   methods: {
-    getUltimasEntregas() { return this.$store.getters.ENTREGAS_LAST_XX_DAYS(10).length },
-    getUltimasFacturas() { return this.$store.getters.FACTURAS_LAST_XX_DAYS(10).length },
+    getUltimasEntregas(days) { 
+      return this.$store.getters.ENTREGAS_LAST_XX_DAYS(days).length
+    },
+    getUltimasFacturas(days) { return this.$store.getters.FACTURAS_LAST_XX_DAYS(days).length },
     getProductosActivos() { return this.$store.getters.PRODUCTOS.length}
   }
 }

@@ -23,7 +23,17 @@ const actions = {
   },
 
   ADD_CLIENTE: (context, data) => {
-    addCliente(data).then((response) => { context.commit('ADD_CLIENTE', response.data) }) 
+    return new Promise((resolve, reject) => {
+      addCliente(data).then(
+        (response) => {
+          context.commit('ADD_CLIENTE', response.data)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
   },
 
   ADD_PUNTO_CLIENTE: (context, data) => {
@@ -126,6 +136,7 @@ DELETE_PUNTO_CLIENTE: (state, idPuntoCliente) => {
 
 const getters = {
   CLIENTES: state => { return state.clientes },
+  // CLIENTES: state => { return state.clientes.sort((a,b) => a.nombre_completo.localeCompare(b.nombre_completo) ) },
   CLIENTE_BY_ID: (state) => (idCliente) => { return state.clientes.find(cliente => cliente.id === idCliente) },
   PUNTO_CLIENTE_BY_ID: (state) => (idPuntoLimpiezaCliente) => { 
     return state.puntosLimpiezaCliente.find(puntoLimpiezaCliente => puntoLimpiezaCliente.id === idPuntoLimpiezaCliente)
