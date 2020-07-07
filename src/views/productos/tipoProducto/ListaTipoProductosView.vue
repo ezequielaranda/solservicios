@@ -35,10 +35,9 @@
              empty-text="No se han encontrado elementos."
              :current-page="currentPage"
              :per-page="perPage"
-             striped
+             head-row-variant="secondary"
              small
              hover
-             head-variant="dark"
              :items="tipoProductos"
              :fields="fields"
              class="shadow mt-2">
@@ -46,15 +45,15 @@
           <b-row class="justify-content-md-center">
             <b-button pill
                       size="sm"
-                      variant="info"
+                      variant="outline-info"
                       class="mr-2"
                       :to="{ name:'editTipoProductoView', params: {idTipoProducto: row.item.id} }">
-                      <b-icon icon="pencil"></b-icon>Editar</b-button>
+                      <b-icon icon="pencil"></b-icon></b-button>
             <b-button pill
                       size="sm"
                       variant="outline-danger"
                       @click='deleteTipoProducto(row.item.id)'>
-                      <b-icon icon="trash"></b-icon>Eliminar</b-button>
+                      <b-icon icon="trash"></b-icon></b-button>
           </b-row>
         </template>
         <template v-slot:table-busy>
@@ -77,9 +76,9 @@ export default {
       perPage: 8,
       currentPage: 1,
       fields: [
-        { key: 'descripcion', label: 'Descripción' },
-        { key: 'codigo', label: 'Código' },
-        { key: 'action', label: '' }
+        { key: 'descripcion', label: 'Descripción', class: 'text-center' },
+        { key: 'codigo', label: 'Código', class: 'text-center' },
+        { key: 'action', label: 'Acciones', class: 'text-center' }
       ]
     }
   },

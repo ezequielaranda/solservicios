@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-3">
+  <b-container fluid class="mt-3">
          <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/productos">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -33,10 +33,9 @@
              empty-text="No se han encontrado elementos."
              :current-page="currentPage"
              :per-page="perPage"
-             striped
+             head-row-variant="secondary"
              small
              hover
-             head-variant="dark"
              :items="familiaProductos"
              :fields="fields"
              class="shadow mt-2">
@@ -44,15 +43,17 @@
           <b-row class="justify-content-md-center">
             <b-button pill
                       size="sm"
-                      variant="info"
+                      variant="outline-info"
                       class="mr-2"
                       :to="{ name:'newEditFamiliaProductoView', params: {idFamiliaProducto: row.item.id} }">
-                      <b-icon icon="pencil"></b-icon>Editar</b-button>
+                      <b-icon icon="pencil"></b-icon>
+            </b-button>
             <b-button pill
                       size="sm"
                       variant="outline-danger"
                       @click='deleteFamiliaProducto(row.item.id)'>
-                      <b-icon icon="trash"></b-icon>Eliminar</b-button>
+                      <b-icon icon="trash"></b-icon>
+            </b-button>
           </b-row>
         </template>
         <template v-slot:table-busy>
@@ -76,9 +77,9 @@ export default {
       perPage: 8,
       currentPage: 1,
       fields: [
-        { key: 'descripcion', label: 'Descripción' },
-        { key: 'codigo', label: 'Código' },
-        { key: 'action', label: '' }
+        { key: 'descripcion', label: 'Descripción', class: 'text-center' },
+        { key: 'codigo', label: 'Código', class: 'text-center' },
+        { key: 'action', label: 'Acciones', class: 'text-center' }
       ]
     }
   },

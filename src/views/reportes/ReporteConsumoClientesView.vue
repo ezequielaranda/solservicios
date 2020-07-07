@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-3">
+  <b-container fluid class="mt-3">
         <b-breadcrumb class="shadow">
             <b-breadcrumb-item to="/listaClientes">
               <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
@@ -10,7 +10,7 @@
      <b-row align-h="between">
         <b-col>
           <b-button pill size='sm' variant="outline-success" to="/" class="shadow mb-2">
-          <b-icon icon="bar-chart-fill"></b-icon>Imprimir Reporte</b-button>
+          <b-icon icon="bar-chart-fill"></b-icon> Imprimir Reporte</b-button>
         </b-col>
     </b-row>
     <div class="shadow border-top my-3"></div>
@@ -44,7 +44,7 @@
     <b-row>
       <b-col>
         <b-button pill size='sm' variant="outline-success" class="shadow" @click="obtenerReporte()">
-          <b-icon icon="eye"></b-icon>Mostrar Reporte</b-button>
+          <b-icon icon="eye"></b-icon> Mostrar Reporte</b-button>
       </b-col>
       <b-col>
         <b-pagination pills v-model="currentPage" :total-rows="totalRows" :per-page="perPage" align="right"

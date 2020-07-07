@@ -59,13 +59,18 @@
         <template v-slot:cell(action)="row" >
           <b-button pill
                     size="sm"
-                    variant="info"
+                    variant="outline-info"
                     class="mr-2"
                     :to="{ name:'NewEditClienteView', params: {idCliente: row.item.id} }">
-                    <b-icon icon="pencil"></b-icon>Editar</b-button>
-          <b-button  class="ml-2" pill size="sm" variant="outline-danger" @click='deleteCliente(row.item.id)'>
-            <b-icon icon="trash"></b-icon>
-            Eliminar</b-button>
+                    <b-icon icon="pencil"></b-icon>
+          </b-button>
+          <b-button class="ml-2" 
+                    pill 
+                    size="sm" 
+                    variant="outline-danger"
+                    @click='deleteCliente(row.item.id)'>
+                    <b-icon icon="trash"></b-icon>
+          </b-button>
         </template>
       </b-table>
 </b-container>
@@ -87,7 +92,7 @@ export default {
       fields: [
         { key: 'nombre_completo', label: 'Nombre Completo', sortable: true, class: 'text-center' },
         { key: 'domicilio', label: 'Domicilio', class: 'text-center' },
-        { key: 'action', label: '', class: 'text-center' }
+        { key: 'action', label: 'Acciones', class: 'text-center' }
       ]
     }
   },

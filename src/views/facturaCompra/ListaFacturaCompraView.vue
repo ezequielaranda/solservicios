@@ -153,10 +153,10 @@ export default {
     return {
       loading: true,
       fields: [
-        { key: 'nombre_proveedor', label: 'Proveedor', sortable: true, class: 'text-left' },
+        { key: 'nombre_proveedor', label: 'Proveedor', sortable: true, class: 'text-center' },
         { key: 'fecha_factura_compra', label: 'Fecha de Compra', sortable: true, class: 'text-center' },
         { key: 'importe_total', label: 'Importe Total', sortable: true, formatter: value => { return '$ ' + value }, class: 'text-center' },
-        { key: 'actions', label: '' }
+        { key: 'actions', label: 'Acciones', class: 'text-center' }
       ],
       fieldsModal: [
         { key: 'nombre_producto', label: 'Nombre de Producto' },

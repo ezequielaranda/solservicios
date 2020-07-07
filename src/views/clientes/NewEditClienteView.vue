@@ -78,9 +78,14 @@
                       variant="info"
                       class="mr-2"
                       :to="{ name:'NewEditPuntoLimpiezaClienteView', params: {idPuntoLimpiezaCliente: row.item.id} }">
-                      <b-icon icon="pencil"></b-icon> Editar</b-button>
-            <b-button pill size="sm" variant="outline-danger" @click='deletePuntoCliente(row.item.id)'><b-icon icon="trash"></b-icon>
-             Eliminar</b-button>
+                      <b-icon icon="pencil"></b-icon>
+            </b-button>
+            <b-button pill 
+                      size="sm" 
+                      variant="outline-danger" 
+                      @click='deletePuntoCliente(row.item.id)'>
+                      <b-icon icon="trash"></b-icon>
+            </b-button>
           </template>
         </b-table>
       </div>
@@ -102,9 +107,9 @@ export default {
       },
       listaPuntosLimpiezaCliente: [],
       fields: [
-        { key: 'nombre_completo', label: 'Nombre Completo' },
-        { key: 'domicilio', label: 'Domicilio' },
-        { key: 'action', label: '' }
+        { key: 'nombre_completo', label: 'Nombre Completo', class: 'text-center' },
+        { key: 'domicilio', label: 'Domicilio', class: 'text-center' },
+        { key: 'action', label: 'Acciones', class: 'text-center' }
       ],
       show: true,
       isEdit: null

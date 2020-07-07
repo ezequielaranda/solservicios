@@ -21,21 +21,21 @@
       </b-row>
       <div class="shadow border-top my-3"></div>
       <b-row>
-        <b-col cols="4">
-        <b-form-group>
-          <b-input-group size="sm">
-            <b-form-input v-model="filter" align="left" type="search" id="filterInput" placeholder="Filtro de búsqueda..."></b-form-input>
-            <b-input-group-append>
-              <b-button :disabled="!filter" @click="filter = ''">Borrar Filtro</b-button>
-            </b-input-group-append>
-          </b-input-group>
-        </b-form-group>
-      </b-col>
+        <b-col cols="3">
+          <b-form-group>
+            <b-input-group size="sm">
+              <b-form-input v-model="filter" align="left" type="search" id="filterInput" placeholder="Filtro de búsqueda..."></b-form-input>
+              <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''">Borrar Filtro</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-form-group>
+        </b-col>
         <b-col cols="2">
           <b-button pill size='sm' variant="outline-success" @click="printReporte" class="shadow mb-2">
           <b-icon icon="bar-chart-fill"></b-icon> Imprimir seleccionados</b-button>
         </b-col>
-        <b-col cols="6">
+        <b-col cols="7">
           <b-pagination v-model="currentPage"
                         :total-rows="rows"
                         :per-page="perPage"
@@ -69,7 +69,7 @@
         <template v-slot:cell(action)="row" >
          <b-row class="justify-content-md-center">
           <b-button pill size="sm" @click="info(row.item, row.index, $event.target)" variant="outline-info" class="mr-2">
-            <b-icon icon="clipboard-data"></b-icon> Stock</b-button>
+            <b-icon icon="clipboard-data"></b-icon> +/- Stock</b-button>
           <b-button pill size="sm" variant="outline-info" class="mr-2" :to="{ name:'newEditProductoView', params: {productoId: row.item.id} }">
                     <b-icon icon="pencil"></b-icon></b-button>
           <b-button pill size="sm" variant="outline-danger" >
@@ -251,7 +251,6 @@ export default {
         dataStock.producto = this.infoModal.content.id
         dataStock.itemFactura = null
         dataStock.itemEntrega = null
-        console.log(dataStock)
         this.$store.dispatch('ADD_STOCK_ITEM_FACTURA_COMPRA', dataStock)
         // addStockItemFacturaCompra(dataStock)
         this.$nextTick(() => {
@@ -268,13 +267,6 @@ export default {
       doc.line(40, 25, 560, 25)
       doc.setFontSize(10)
       doc.text('Lista de Productos', 40, 40)
-      // doc.text('Cliente:', 40, 60)
-      // doc.text('Fecha de Entrega:', 380, 60)
-      // doc.setFontSize(12)
-      // doc.setFontStyle('bold')
-      // doc.text(this.infoModal.punto_limpieza_cliente.nombre_completo, 80, 60)
-      // doc.text(this.infoModal.content.fecha_entrega, 480, 60)
-
       var columns = [
         { title: 'Nombre completo', dataKey: 'nombre_completo' },
         { title: 'Proveedor', dataKey: 'nombre_proveedor' },
@@ -285,15 +277,6 @@ export default {
         margin: { top: 70 },
         theme: 'grid',
         allSectionHooks: true
-        // didParseCell: function (data) {
-        //   if (data.column.dataKey === 'esEntrega' && data.row.section === 'body') {
-        //     if (data.cell.raw === true) {
-        //       data.cell.text = 'ENTREGA'
-        //     } else {
-        //       data.cell.text = 'DEVOLUCIÓN'
-        //     }
-        //   }
-        // }
       })
       doc.save('lista_de_productos.pdf')
     }

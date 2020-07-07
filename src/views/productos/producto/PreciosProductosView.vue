@@ -10,14 +10,32 @@
       <!--b-button pill variant="outline-success" to="/controlStockProductosView" size="sm" class="mb-2 mr-2">
       <b-icon icon="kanban"></b-icon>Control de Stock</b-button-->
       <div class="shadow border-top my-3"></div>
-      <b-pagination v-model="currentPage"
-                    :total-rows="rows"
-                    :per-page="perPage"
-                    aria-controls="tablaProductos"
-                    size="sm"
-                    pills
-                    align="right">
-      </b-pagination>
+      <b-row>
+       <b-col cols="3">
+          <b-form-group>
+            <b-input-group size="sm">
+              <b-form-input v-model="filter" align="left" type="search" id="filterInput" placeholder="Filtro de búsqueda..."></b-form-input>
+              <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''">Borrar Filtro</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        <b-col cols="2">
+          <b-button disabled pill size='sm' variant="outline-success" @click="printReporte" class="shadow mb-2">
+          <b-icon icon="bar-chart-fill"></b-icon>Imprimir Listado de Precios</b-button>
+        </b-col>
+        <b-col cols="7">
+          <b-pagination v-model="currentPage"
+                        :total-rows="rows"
+                        :per-page="perPage"
+                        aria-controls="tablaProductos"
+                        size="sm"
+                        pills
+                        align="right">
+          </b-pagination>
+        </b-col>  
+       </b-row> 
       <b-table id="tablaProductos"
                                    small
                                    empty-text="No existen precios de productos cargados en la Base de Datos."
@@ -28,20 +46,19 @@
                                    head-row-variant="secondary"
                                    :items="listaProductos"
                                    :fields="fields"
+                                   :filter="filter"
+                                   @filtered="onFiltered"
                                    class="shadow">
-        <!--template v-slot:table-caption>
-          <b-img blank blank-color="#ECA9A7" width="14" height="16" alt="placeholder"></b-img>
-            Productos con stock menor o igual a CERO
-        </template-->
         <template v-slot:cell(action)="row" >
           <b-row class="justify-content-md-center">
-            <b-button pill size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-              <b-icon icon="eye"></b-icon>Ver precios históricos
+            <b-button pill variant="outline-info" size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
+              <b-icon icon="fullscreen"></b-icon> Precios históricos
           </b-button>
           </b-row>
         </template>
         <template v-slot:cell(precio)="row">
              <strong v-if="row.item.preciosProducto[0]!=null"> {{ row.item.preciosProducto[0].importe | money }}</strong>
+             <strong v-else>N/A</strong>
         </template>
         <template v-slot:table-busy>
         <div class="text-center text-danger my-2">
@@ -110,6 +127,8 @@ export default {
       currentPage: 1,
       listaProductos: [],
       rows: 0,
+      filter: null,
+      filterOn: [],
       fields: [
         { key: 'nombre_completo', label: 'Producto', sortable: true },
         { key: 'nombre_proveedor', label: 'Proveedor', class: 'text-center' },
@@ -134,6 +153,11 @@ export default {
   },
 
   methods: {
+    
+    onFiltered (filteredItems) {
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
+    },
 
     fetchData () {
       this.isBusy = true

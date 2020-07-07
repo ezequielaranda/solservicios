@@ -35,13 +35,16 @@
         <template v-slot:cell(action)="row" >
           <b-button pill
                     size="sm"
-                    variant="info"
-                    class="mr-2"
+                    variant="outline-info"
                     :to="{ name:'NewEditProveedorView', params: {proveedorId: row.item.id} }">
-                    <b-icon icon="pencil"></b-icon>Editar</b-button>
-          <b-button  class="ml-2" pill size="sm" variant="outline-danger" @click='deleteProveedor(row.item.id)'>
-            <b-icon icon="trash"></b-icon>
-            Eliminar</b-button>
+                    <b-icon icon="pencil"></b-icon></b-button>
+          <b-button class="ml-2" 
+                    pill 
+                    size="sm" 
+                    variant="outline-danger" 
+                    @click='deleteProveedor(row.item.id)'>
+                    <b-icon icon="trash"></b-icon>
+          </b-button>
         </template>
         <template v-slot:table-busy>
           <div class="text-center text-danger my-2">
@@ -65,13 +68,13 @@ export default {
       perPage: 8,
       currentPage: 1,
       fields: [
-        { key: 'nombre_completo', label: 'Nombre Completo' },
-        { key: 'razon_social', label: 'Razón Social' },
-        { key: 'domicilio', label: 'Domicilio' },
-        { key: 'ingresos_brutos', label: 'IIBB' },
-        { key: 'condicionIVA', label: 'I.V.A.' },
-        { key: 'cuit', label: 'CUIT' },
-        { key: 'action', label: '' }
+        { key: 'nombre_completo', label: 'Nombre Completo', class: 'text-center' },
+        { key: 'razon_social', label: 'Razón Social', class: 'text-center' },
+        { key: 'domicilio', label: 'Domicilio', class: 'text-center' },
+        { key: 'ingresos_brutos', label: 'IIBB', class: 'text-center' },
+        { key: 'condicionIVA', label: 'I.V.A.', class: 'text-center' },
+        { key: 'cuit', label: 'CUIT', class: 'text-center' },
+        { key: 'action', label: 'Acciones', class: 'text-center'  }
       ]
     }
   },
