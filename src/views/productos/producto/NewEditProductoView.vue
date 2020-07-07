@@ -94,6 +94,7 @@
               id="input-2"
               v-model.number="form.factor_multiplicacion"
               type="number"
+              step="0.01"
               required
               placeholder="1.0"
               class="mb-1"
