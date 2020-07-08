@@ -197,14 +197,12 @@ export default {
     listaFacturasCompraAPI () { return this.$store.getters.FACTURASCOMPRA }
   
   },
-  mounted () {
-
-  },
 
   created () { 
     this.loading = true,
     this.$store.dispatch('GET_FACTURASCOMPRA')
-    this.loading = false },
+    this.loading = false
+  },
 
   methods: {
 

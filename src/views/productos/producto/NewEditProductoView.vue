@@ -164,14 +164,24 @@ export default {
         
         if(this.isEdit) {
           this.$store.dispatch('EDIT_PRODUCTO', this.form).then(
-            swal('Producto editado exitosamente!', '', 'success'),
-            this.$router.push('productos')
-          ).catch((error) => { swal(error.toString(), '', 'error') })
+            response => {
+                swal('Producto editado exitosamente!', '', 'success'),
+                this.$router.push('productos')
+            },
+            error => {
+                swal(error.toString(), '', 'error')
+            }
+          )
         } else {
           this.$store.dispatch('ADD_PRODUCTO', this.form).then(
-            swal('Producto creado exitosamente!', '', 'success'),
-            this.$router.push('productos')
-          ).catch((error) => { swal(error.toString(), '', 'error') })
+            response => {
+                swal('Producto creado exitosamente!', '', 'success'),
+                this.$router.push('productos')
+            },
+            error => {
+                swal(error.toString(), '', 'error')
+            }
+          )
         }
       } else {
         swal('Por favor, corrija los errores antes de continuar.', '', 'error')

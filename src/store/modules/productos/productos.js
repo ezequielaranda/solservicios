@@ -22,36 +22,69 @@ const actions = {
   },
 
   ADD_PRODUCTO: (context, data) => {
-    addProducto(data).then((response) => { 
-      context.commit('ADD_PRODUCTO', response.data) }) 
+    return new Promise((resolve, reject) => {
+      addProducto(data).then(
+        (response) => {
+          context.commit('ADD_PRODUCTO', response.data)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
   },
 
   EDIT_PRODUCTO: (context, data) => {
-    editProducto(data).then((response) => { context.commit('EDIT_PRODUCTO', response.data) })
+    return new Promise((resolve, reject) => {
+      editProducto(data).then(
+        (response) => {
+          context.commit('EDIT_PRODUCTO', response.data)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
   },
 
   DELETE_PRODUCTO: (context, idProducto) => {
-    deleteProducto(idProducto).then(() => { context.commit('DELETE_PRODUCTO', idProducto)} )
+    return new Promise((resolve, reject) => {
+      deleteProducto(idProducto).then(
+        () => {
+          context.commit('DELETE_PRODUCTO', idProducto)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
   },
 
   
   GET_STOCK_PRODUCTOS: (context) => {
     return new Promise((resolve, reject) => {
-      getStockProductos().then((response) => {
-        resolve(response.data)
-      }, (error) => {
+      getStockProductos().then(
+        (response) => {
+          resolve(response.data)
+        },
+        (error) => {
           reject(error)
-         }) 
+        }) 
     })
   },
 
   GET_PRECIO_PRODUCTOS: (context) => {
     return new Promise((resolve, reject) => {
-      getPreciosProductos().then((response) => {
-        resolve(response.data)
-      }, (error) => {
+      getPreciosProductos().then(
+        (response) => {
+          resolve(response.data)
+        },
+        (error) => {
           reject(error)
-         }) 
+        }) 
     })
   },
 

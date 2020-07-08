@@ -80,10 +80,12 @@ const actions = {
 
   DELETE_CLIENTE: (context, idCliente) => {
     return new Promise((resolve, reject) => {
-      deleteCliente(idCliente).then(() => {
-        context.commit('DELETE_CLIENTE', idCliente)
-        resolve()
-      }, (error) => {
+      deleteCliente(idCliente).then(
+        () => {
+          context.commit('DELETE_CLIENTE', idCliente)
+          resolve()
+        },
+        (error) => {
           reject(error)
         }) 
     })

@@ -201,6 +201,10 @@ export default {
     stateCantidadManual () { return this.cantidadManual >= 0 }
   },
 
+  created () { 
+    this.$store.dispatch('GET_PRODUCTOS')
+  },
+
   methods: {
     onFiltered (filteredItems) {
       this.totalRows = filteredItems.length
