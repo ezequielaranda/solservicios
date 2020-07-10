@@ -232,8 +232,9 @@ export default {
     info (item, index, button) {
       this.infoModal.content = item
       getStockHistoricoByIdProductoEstado(item.id, 0).then((response) => {
+        console.log(response.data)
         response.data.forEach(element => {
-          this.infoModal.stockProducto =+ element.cantidad
+          this.infoModal.stockProducto += element.cantidad
         });
       })
       this.$root.$emit('bv::show::modal', this.infoModal.id, button)
