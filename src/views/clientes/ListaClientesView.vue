@@ -26,12 +26,25 @@
       </b-row>
 
       <div class="shadow border-top my-3"></div>
+      
       <b-row align-h="between">
-        <b-col>
+        <b-col cols="3">
+          <b-form-group>
+            <b-input-group size="sm">
+              <b-form-input v-model="filter" align="left" type="search" id="filterInput" placeholder="Filtro de búsqueda..."></b-form-input>
+              <b-input-group-append>
+                <b-button :disabled="!filter" @click="filter = ''">Borrar Filtro</b-button>
+              </b-input-group-append>
+            </b-input-group>
+          </b-form-group>
+        </b-col>
+        
+        <b-col cols="2">
           <b-button pill size='sm' variant="outline-success" @click="printReporte" class="shadow mb-2">
           <b-icon icon="bar-chart-fill"></b-icon> Imprimir Lista de Clientes</b-button>
         </b-col>
-        <b-col>
+        
+        <b-col cols="7">
           <b-pagination v-model="currentPage"
                     :total-rows="rows"
                     :per-page="perPage"
@@ -42,6 +55,7 @@
                     >
           </b-pagination>
         </b-col>
+
       </b-row>
 
       <b-table id="tablaClientes"
@@ -55,7 +69,9 @@
                :per-page="perPage"
                :current-page="currentPage"
                :busy="isBusy"
-               class="shadow mt-2">
+               class="shadow mt-2"
+               :filter="filter"
+               @filtered="onFiltered">
         <template v-slot:cell(action)="row" >
           <b-button pill
                     size="sm"
@@ -86,6 +102,8 @@ export default {
   name: 'ListaClientesView',
   data () {
     return {
+      filter: null,
+      filterOn: [],
       isBusy: false,
       perPage: 8,
       currentPage: 1,
@@ -104,6 +122,12 @@ export default {
 
 
   methods: {
+    
+    onFiltered (filteredItems) {
+      this.totalRows = filteredItems.length
+      this.currentPage = 1
+    },
+    
     deleteCliente (clienteId) {
       swal('Está seguro de eliminar El Cliente seleccionado?', {
         buttons: {

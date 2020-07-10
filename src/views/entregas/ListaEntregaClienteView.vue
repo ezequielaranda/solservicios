@@ -209,8 +209,14 @@ export default {
         .then((value) => {
           switch (value) {
             case 'catch':
-              // deleteEntregaCliente(entregaId).then((response) => { this.fetchData() })
-              // this.$store.dispatch('DELETE_TIPO_PRODUCTO', facturaId)
+              this.$store.dispatch('DELETE_ENTREGA', entregaId).then( 
+                response => {
+                  swal('Entrega eliminada exitosamente.', '', 'success')
+                },
+                error => {
+                  swal('La entrega seleccionada no puede ser eliminada.', '', 'error')
+                }
+              )
               break
           }
         })

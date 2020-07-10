@@ -77,7 +77,21 @@ const actions = {
 
   ADD_STOCK_ITEM_ENTREGA: (context, data) => {
     addStockItemEntregaCliente(data)
-  }
+  },
+
+  DELETE_ENTREGA: (context, idEntrega) => {
+    return new Promise((resolve, reject) => {
+      deleteEntregaCliente(idEntrega).then(
+        () => {
+          context.commit('DELETE_ENTREGA', idEntrega)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
+  },
 }
 
 const mutations = {
@@ -93,8 +107,9 @@ const mutations = {
     })
   },
 
-  DELETE_ENTREGA: (state, entregaCliente) => {
-
+  DELETE_ENTREGA: (state, idEntregaCliente) => {
+    const objIndex = state.entregasCliente.findIndex(obj => obj.id === idEntregaCliente)
+    state.entregasCliente.splice(objIndex, 1)
   }
 }
 
