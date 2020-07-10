@@ -30,7 +30,7 @@
       <b-col cols="7">
        <b-pagination pills
                      v-model="currentPage"
-                     :total-rows="totalRows"
+                     :total-rows="rows"
                      :per-page="perPage"
                      align="right"
                      aria-controls="tablaEntregaCliente"
@@ -43,6 +43,7 @@
       id="tablaEntregaCliente"
       show-empty
       small
+      bordered
       head-row-variant="secondary"
       stacked="sm"
       :items="listaEntregasCliente"
@@ -55,10 +56,9 @@
       :sort-desc.sync="sortDesc"
       :sort-direction="sortDirection"
       @filtered="onFiltered"
+      :busy="loading"
       empty-text="No se han encontrado Entregas a Cliente"
       class="shadow"
-      :tbody-transition-props="transProps"
-      primary-key="id"
     >
       <template v-slot:cell(actions)="row">
         <b-row class="justify-content-md-center">
@@ -124,23 +124,20 @@ export default {
   name: 'listaEntregaClienteView',
   data () {
     return {
-      transProps: {
-          // Transition name
-          name: 'flip-list'
-        },
-      listaEntregasCliente: [],
+
+      // listaEntregasCliente: [],
       loading: false,
       fields: [
-        { key: 'nombre_punto_limpieza_cliente', label: 'Punto de Limpieza de Cliente', sortable: true, class: 'text-left' },
+        { key: 'nombre_punto_limpieza_cliente', label: 'Punto de Limpieza de Cliente', sortable: true, class: 'text-center' },
         { key: 'fecha_entrega', label: 'Fecha de Entrega', sortable: true, class: 'text-center' },
-        { key: 'actions', label: '' }
+        { key: 'actions', label: 'Acciones', class: 'text-center' }
       ],
       fieldsModal: [
         { key: 'nombre_producto', label: 'Nombre de Producto' },
         { key: 'cantidad', label: 'Cantidad', sortable: true, class: 'text-center' },
         { key: 'esEntrega', label: 'Entrega / Devolución', formatter: (value, key, item) => { return value ? 'ENT' : 'DEV' }, class: 'text-center' }
       ],
-      totalRows: 1,
+      //totalRows: 1,
       currentPage: 1,
       perPage: 8,
       pageOptions: [5, 10, 15],
@@ -160,20 +157,20 @@ export default {
   },
   computed: {
 
-    rows () { return this.listaFacturasCompraAPI.length },
-    listaFacturasCompraAPI () { return this.$store.getters.FACTURASCOMPRA }
+    rows () { return this.listaEntregasCliente.length },
+    listaEntregasCliente () { return this.$store.getters.ENTREGAS }
 
   },
 
   mounted () {
-    this.listaEntregasCliente = this.$store.getters.ENTREGAS
-    this.totalRows = this.listaEntregasCliente.length
+    //this.listaEntregasCliente = this.$store.getters.ENTREGAS
+    //this.totalRows = this.listaEntregasCliente.length
   },
 
   created () {
-        this.loading = true,
-        this.$store.dispatch('GET_ENTREGAS'),
-        this.loading = false
+        //this.loading = true,
+        //this.$store.dispatch('GET_ENTREGAS'),
+        //this.loading = false
   },
 
   methods: {
@@ -191,7 +188,7 @@ export default {
     },
     onFiltered (filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.totalRows = filteredItems.length
+      // this.totalRows = filteredItems.length
       this.currentPage = 1
     },
 
@@ -271,9 +268,6 @@ export default {
     color: white;
   }
 
-  table#tablaEntregaCliente .flip-list-move {
-    transition: transform 1s;
-  }
 
 
   

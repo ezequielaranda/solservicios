@@ -223,7 +223,7 @@ export default {
   methods: {
     
     onFiltered (filteredItems) {
-      this.totalRows = filteredItems.length
+      this.rows = filteredItems.length
       this.currentPage = 1
     },
 

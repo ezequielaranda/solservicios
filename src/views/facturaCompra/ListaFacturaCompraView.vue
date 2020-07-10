@@ -151,7 +151,7 @@ export default {
   },
   data () {
     return {
-      loading: true,
+      loading: false,
       fields: [
         { key: 'nombre_proveedor', label: 'Proveedor', sortable: true, class: 'text-center' },
         { key: 'fecha_factura_compra', label: 'Fecha de Compra', sortable: true, class: 'text-center' },
@@ -199,9 +199,9 @@ export default {
   },
 
   created () { 
-    this.loading = true,
-    this.$store.dispatch('GET_FACTURASCOMPRA')
-    this.loading = false
+    //this.loading = true,
+    //this.$store.dispatch('GET_FACTURASCOMPRA')
+    //this.loading = false
   },
 
   methods: {
@@ -219,7 +219,7 @@ export default {
     },
     onFiltered (filteredItems) {
       // Trigger pagination to update the number of buttons/pages due to filtering
-      this.rows = filteredItems.length
+      // this.rows = filteredItems.length
       this.currentPage = 1
     },
     deleteFactura (facturaId) {

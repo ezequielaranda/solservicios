@@ -164,6 +164,7 @@ export default {
   name: 'ListaProductosView',
   data () {
     return {
+      
       isBusy: false,
       tipoMovimiento: 'ST_IN',
       perPage: 8,
@@ -202,12 +203,13 @@ export default {
   },
 
   created () { 
-    this.$store.dispatch('GET_PRODUCTOS')
+    // this.$store.dispatch('GET_PRODUCTOS')
   },
 
   methods: {
     onFiltered (filteredItems) {
-      this.totalRows = filteredItems.length
+      //this.totalRows = filteredItems.length
+      this.rows = filteredItems.length
       this.currentPage = 1
     },
     onRowSelected(items) {

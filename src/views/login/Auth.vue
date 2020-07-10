@@ -73,15 +73,15 @@ export default {
     login () {
       this.$store.dispatch('AUTH_REQUEST', this.credentials)
         .then(() => { 
+              this.$store.dispatch('GET_PRODUCTOS')
+              this.$store.dispatch('GET_FACTURASCOMPRA')
+              this.$store.dispatch('GET_ENTREGAS')
               this.$store.dispatch('GET_PROVEEDORES')
               this.$store.dispatch('GET_CLIENTES')
               this.$store.dispatch('GET_PUNTOS_CLIENTES')
               this.$store.dispatch('GET_TIPO_PRODUCTOS')
               this.$store.dispatch('GET_FAMILIAS_PRODUCTO')
               this.$store.dispatch('GET_ESTADOS_PRODUCTO')
-              this.$store.dispatch('GET_PRODUCTOS')
-              this.$store.dispatch('GET_FACTURASCOMPRA')
-              this.$store.dispatch('GET_ENTREGAS')
               this.$store.dispatch('GET_DATOSEMPRESA')
               
               this.$router.push('/')
