@@ -266,7 +266,7 @@ export default {
         { key: 'subtotal', label: 'subtotal', sortable: false, class: "text-center" },
         { key: 'alicuotaIVA', label: '% IVA', sortable: false, class: "text-center" },
         { key: 'total', label: 'total', sortable: false, class: "text-center" },
-        { key: 'actions', label: '' }
+        { key: 'actions', label: 'Acciones', class: 'text-center' }
       ],
       editIndex: null,
       originalData: null,

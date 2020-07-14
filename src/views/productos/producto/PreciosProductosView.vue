@@ -136,7 +136,12 @@ export default {
         { key: 'action', label: '' }
       ],
       fieldsModal: [
-        { key: 'fecha_inicio', label: 'Fecha de Compra', sortable: true },
+        { key: 'fecha_inicio',
+          label: 'Fecha de Compra', 
+          sortable: true,
+          class: 'text-center',
+          formatter: (value, key, item) => {return this.$moment(item.fecha_inicio).format("LL")}
+        },
         { key: 'importe', label: 'Precio de Compra', class: 'text-center', sortable: true }
       ],
       infoModal: {

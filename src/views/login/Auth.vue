@@ -4,9 +4,8 @@
       <div class="shadow border-top my-3"></div-->
       
       <b-form class="mt-5 form-signin" @submit="onSubmit" @reset="onReset">
-        <!--img src='@/assets/sol-servicios-logo-b.png' class="mb-4" style="width: 130px" /-->
-        <!--b-img class="mb-3" style="width: 120px" center src="http://www.solservicios.com.ar/img/sol-servicios-logo-b.png"></b-img-->
-        <b-img class="mb-3" style="width: 120px" center src="http://www.sutterservicios.com.ar/wp-content/uploads/elementor/thumbs/sutter-logo-header-white-350x157-nwhpmj3yfywdz8jzh53yrsqtvoj60lgrtl8jzyx5sy.png"></b-img>
+        <b-img class="mb-3" style="width: 120px" center src="http://www.solservicios.com.ar/img/sol-servicios-logo-b.png"></b-img>
+        <!--b-img class="mb-3" style="width: 120px" center src="http://www.sutterservicios.com.ar/wp-content/uploads/elementor/thumbs/sutter-logo-header-white-350x157-nwhpmj3yfywdz8jzh53yrsqtvoj60lgrtl8jzyx5sy.png"></b-img-->
         <b-form-group id="input-group-1" label="Nombre de Usuario:" label-for="input-1">
           <b-form-input
             id="input-1"

@@ -62,16 +62,20 @@
     >
       <template v-slot:cell(actions)="row">
         <b-row class="justify-content-md-center">
-          <b-button pill size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-          <b-icon icon="eye"></b-icon> Ver detalles
+          <b-button pill variant="outline-info" size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
+          <b-icon icon="fullscreen"></b-icon> Detalle
           </b-button>
-          <b-button pill size="sm" :to="{ name:'newDevolucionEntregaClienteView', params: {entregaId: row.item.id} }" class="mr-2">
-          <b-icon icon="plus"></b-icon> Agregar devolución
+          <b-button pill
+                    variant="outline-info"
+                    size="sm" 
+                    :to="{ name:'newDevolucionEntregaClienteView', params: {entregaId: row.item.id} }"
+                    class="mr-2">
+          <b-icon icon="pencil"></b-icon> Editar
           </b-button>
           <b> | </b>
            <b-button  class="ml-2" pill size="sm" variant="outline-danger" @click='deleteEntregaCliente(row.item.id)'>
             <b-icon icon="trash"></b-icon>
-            Eliminar</b-button>
+           </b-button>
         </b-row>
       </template>
     </b-table>
@@ -86,10 +90,44 @@
              footer-text-variant="light"
              @hide="resetInfoModal">
 
-      <b-row class="bg-light">
-        <b-col><p class="text-dark mt-3 thick" >Cliente: <b-badge variant="info">{{ infoModal.punto_limpieza_cliente.nombre_completo }}</b-badge></p></b-col>
-        <b-col><p class="text-dark mt-3 thick" >Domicilio: <b-badge variant="info">{{ infoModal.punto_limpieza_cliente.domicilio }}</b-badge></p></b-col>
-        <b-col><p class="text-dark mt-3 thick" >Fecha de Entrega: <b-badge variant="info">{{ infoModal.content.fecha_entrega }}</b-badge></p></b-col>
+      <b-row>
+        <b-col>
+          <b-input-group>
+            <template v-slot:prepend>
+              <b-input-group-text class="bg-info">
+                <b class="text-white">Cliente --> Punto de Limpieza:</b>
+              </b-input-group-text>
+            </template>
+            <b-form-input disabled
+                          :value="infoModal.content.nombre_cliente + ` --> ` + infoModal.content.nombre_punto_limpieza_cliente">
+            </b-form-input>
+          </b-input-group>
+        </b-col>
+      </b-row>
+      <b-row class="mt-1">
+        <b-col cols="0"></b-col>
+        <b-col cols="8">
+          <b-input-group size="sm">
+            <template v-slot:prepend>
+              <b-input-group-text class="bg-white font-italic"><b>Domicilio:</b></b-input-group-text>
+            </template>
+            <b-form-input class="bg-white font-italic" 
+                          disabled
+                          :value="infoModal.punto_limpieza_cliente.domicilio">
+            </b-form-input>
+          </b-input-group>
+        </b-col>
+        <b-col cols="4">
+          <b-input-group size="sm">
+            <template v-slot:prepend>
+              <b-input-group-text class="bg-white font-italic"><b>Fecha de Entrega:</b></b-input-group-text>
+            </template>
+            <b-form-input class="bg-white font-italic"
+                          disabled
+                          :value="infoModal.content.fecha_entrega | date">
+            </b-form-input>
+          </b-input-group>
+        </b-col>
       </b-row>
       <div class="shadow border-top my-3"></div>
       <b-table bordered small striped :fields="fieldsModal" :items="infoModal.content.itemsEntrega"></b-table>
@@ -119,21 +157,36 @@
 import JsPDF from 'jspdf'
 import 'jspdf-autotable'
 import swal from 'sweetalert'
+import moment from 'moment'
 
 export default {
   name: 'listaEntregaClienteView',
+  filters: {
+    date: (value) => moment(value).locale('es').format('LL')
+   },
   data () {
     return {
 
       // listaEntregasCliente: [],
       loading: false,
       fields: [
-        { key: 'nombre_punto_limpieza_cliente', label: 'Punto de Limpieza de Cliente', sortable: true, class: 'text-center' },
-        { key: 'fecha_entrega', label: 'Fecha de Entrega', sortable: true, class: 'text-center' },
+        { key: 'nombre_punto_limpieza_cliente', 
+          label: 'Cliente --> Punto de Limpieza', 
+          sortable: true, 
+          class: 'text-center',
+          formatter: (value, key, item) => { return item.nombre_cliente + ' --> ' + item.nombre_punto_limpieza_cliente }
+        },
+        { key: 'fecha_entrega', 
+          label: 'Fecha de Entrega', 
+          sortable: true, 
+          class: 'text-center',
+          formatter: (value, key, item) => {return this.$moment(item.fecha_entrega).format("L")
+          }
+        },
         { key: 'actions', label: 'Acciones', class: 'text-center' }
       ],
       fieldsModal: [
-        { key: 'nombre_producto', label: 'Nombre de Producto' },
+        { key: 'nombre_producto', label: 'Nombre de Producto', class: 'text-center' },
         { key: 'cantidad', label: 'Cantidad', sortable: true, class: 'text-center' },
         { key: 'esEntrega', label: 'Entrega / Devolución', formatter: (value, key, item) => { return value ? 'ENT' : 'DEV' }, class: 'text-center' }
       ],

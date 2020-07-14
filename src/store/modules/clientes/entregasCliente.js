@@ -41,8 +41,13 @@ const actions = {
     entrega.itemsEntrega.forEach(elementEntrega => {
       elementEntrega.producto = elementEntrega.nombreProducto.id
       elementEntrega.entregaCliente = entrega.idEntregaCliente
-      context.dispatch('ADD_ITEM_DEVOLUCION', elementEntrega)
-    })
+      if(elementEntrega.esEntrega) {
+        context.dispatch('ADD_ITEM_ENTREGA', elementEntrega)
+      } else {
+        context.dispatch('ADD_ITEM_DEVOLUCION', elementEntrega)
+      }
+   })
+   //context.dispatch('GET_ENTREGAS')
   },
 
   ADD_ITEM_ENTREGA: (context, itemEntrega) => {

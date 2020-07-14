@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from '@/App.vue'
 
-// import moment from 'moment';
+import moment from 'moment';
 
 import store from '@/store' 
 import router from '@/router'
@@ -13,15 +13,16 @@ import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import 'vue-select/dist/vue-select.css'
 
+moment.locale('es');
+Object.defineProperty(Vue.prototype, '$moment', { value: moment });
+
 Vue.config.productionTip = false
 Vue.use(BootstrapVue)
 Vue.use(BootstrapVueIcons)
 Vue.use(VueRouter)
 Vue.use(VueSession)
-// Vue.use(moment)
 Vue.component('v-select', vSelect)
 
-// Vue.use(VueRouter)
 
 const vue = new Vue({
   router,

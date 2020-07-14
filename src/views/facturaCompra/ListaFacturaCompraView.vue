@@ -78,7 +78,7 @@
       <b-row class="bg-light">
         <b-col><p class="text-dark mt-3 thick">Proveedor: <b-badge variant="info">{{ infoModal.proveedor.nombre_completo }}</b-badge></p></b-col>
         <b-col><p class="text-dark mt-3 thick">C.U.I.T.: <b-badge variant="info">{{ infoModal.proveedor.cuit }}</b-badge></p></b-col>
-        <b-col><p class="text-dark mt-3 thick">Fecha de Factura: <b-badge variant="info">{{ infoModal.content.fecha_factura_compra }}</b-badge></p></b-col>
+        <b-col><p class="text-dark mt-3 thick">Fecha de Factura: <b-badge variant="info">{{ infoModal.content.fecha_factura_compra | date }}</b-badge></p></b-col>
       </b-row>
       <div class="shadow border-top my-3"></div>
       <b-table small striped bordered :fields="fieldsModal" :items="infoModal.content.itemsFactura"></b-table>
@@ -143,18 +143,25 @@
 import swal from 'sweetalert'
 import JsPDF from 'jspdf'
 import 'jspdf-autotable'
+import moment from 'moment'
 
 export default {
   name: 'ListaFacturaCompraView',
   filters: {
-    money: (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value)
-  },
+    money: (value) => new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(value),
+    date: (value) => moment(value).locale('es').format('LL')
+   },
   data () {
     return {
       loading: false,
       fields: [
         { key: 'nombre_proveedor', label: 'Proveedor', sortable: true, class: 'text-center' },
-        { key: 'fecha_factura_compra', label: 'Fecha de Compra', sortable: true, class: 'text-center' },
+        { key: 'fecha_factura_compra',
+          label: 'Fecha de Compra',
+          sortable: true, 
+          class: 'text-center',
+          formatter: (value, key, item) => {return this.$moment(item.fecha_factura_compra).format("LL")}
+        },
         { key: 'importe_total', label: 'Importe Total', sortable: true, formatter: value => { return '$ ' + value }, class: 'text-center' },
         { key: 'actions', label: 'Acciones', class: 'text-center' }
       ],

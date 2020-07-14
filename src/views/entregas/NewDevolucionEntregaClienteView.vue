@@ -6,28 +6,33 @@
               Clientes
             </b-breadcrumb-item>
             <b-breadcrumb-item to="/listaEntregaClienteView">Listado de Entregas de Producto</b-breadcrumb-item>
-            <b-breadcrumb-item active>Nueva Devolución</b-breadcrumb-item>
+            <b-breadcrumb-item active>Editar Entrega</b-breadcrumb-item>
         </b-breadcrumb>
       <b-form @submit="onSubmit" @reset="onReset" v-if="showForm">
 
-    <b-input-group size="sm" class="mb-1">
-      <template v-slot:prepend>
-        <b-input-group-text class="bg-info"><strong class="text-white">Cliente:</strong></b-input-group-text>
-      </template>
-      <b-form-input class="bg-white text-left" disabled :value="nombreClienteEntrega"></b-form-input>
-    </b-input-group>
-    <b-input-group size="sm" class="mb-1">
-      <template v-slot:prepend>
-        <b-input-group-text class="bg-info"><strong class="text-white">Punto de Limpieza:</strong></b-input-group-text>
-      </template>
-      <b-form-input class="bg-white text-left" disabled :value="nombrePuntoLimpiezaEntrega"></b-form-input>
-    </b-input-group>
-    <b-input-group size="sm" class="mb-1">
-      <template v-slot:prepend>
-        <b-input-group-text class="bg-info"><strong class="text-white">Fecha de Entrega:</strong></b-input-group-text>
-      </template>
-      <b-form-input class="bg-white text-left" disabled :value="fechaEntrega"></b-form-input>
-    </b-input-group>
+    <b-row class="mb-1">
+      <b-col cols="9">
+        <b-input-group size="sm">
+          <template v-slot:prepend>
+            <b-input-group-text class="bg-info">
+              <strong class="text-white">Cliente --> Punto de Limpieza:</strong>
+            </b-input-group-text>
+          </template>
+          <b-form-input class="bg-white text-left" disabled :value="nombreClienteEntrega + ` --> ` + nombrePuntoLimpiezaEntrega" ></b-form-input>
+        </b-input-group>
+      </b-col>
+      <b-col cols="3">
+        <b-input-group size="sm">
+          <template v-slot:prepend>
+            <b-input-group-text class="bg-info">
+              <a class="text-white">Fecha de Entrega:</a>
+            </b-input-group-text>
+          </template>
+          <b-form-input class="bg-white text-left" disabled :value="fechaEntrega"></b-form-input>
+        </b-input-group>
+      </b-col>
+    </b-row>
+    
         <div class="shadow border-top my-3"></div>
           <b-table
             fixed
@@ -44,7 +49,8 @@
           >
           <template v-slot:table-colgroup="scope">
             <col :style="{ width:'5%' }"/>
-            <col :style="{ width:'55%' }"/>
+            <col :style="{ width:'45%' }"/>
+            <col :style="{ width:'10%' }"/>
             <col :style="{ width:'15%' }"/>
           </template>
 
@@ -65,6 +71,28 @@
                 </b-form-invalid-feedback>
              </b-form>
           </template>
+          
+          <template v-slot:cell(esEntrega)="row">
+              <b-form-checkbox
+                  size="sm" 
+                  v-if="editIndex === row.index + 1"
+                  v-model="row.item.esEntrega" 
+                  name="check-button" button>
+                  <b>{{ (row.item.esEntrega) ? "ENTREGA" : "DEVOLUCIÓN" }}</b>
+              </b-form-checkbox>
+              <p v-if="editIndex !== row.index + 1 && row.item.esEntrega"> ENTREGA</p>
+              <p v-if="editIndex !== row.index + 1 && !row.item.esEntrega"> DEVOLUCIÓN</p>
+              
+              
+              
+              <!--b-form-input
+                    size="sm"
+                    v-if="editIndex === row.index + 1"
+                    v-model="row.item.esEntrega"
+                    
+                    class="shadow text-dark bg-light">
+              </b-form-input-->
+          </template>
 
           <template v-slot:cell(cantidad)="row">
               <p v-if="editIndex !== row.index + 1"> {{ row.item.cantidad }}</p>
@@ -82,16 +110,16 @@
 
             <template v-slot:cell(actions)="row">
               <b-row v-if="editIndex !== row.index + 1" class="justify-content-md-center">
-                <b-button pill class="mr-2" size="sm" @click="edit(row.item, row.index + 1)" variant="info">
-                  <b-icon icon="pencil"></b-icon>Editar</b-button>
+                <b-button pill class="mr-2" size="sm" @click="edit(row.item, row.index + 1)" variant="outline-info">
+                  <b-icon icon="pencil"></b-icon></b-button>
                 <b-button pill size="sm" @click="remove(row.item, row.index + 1)" variant="outline-danger">
-                  <b-icon icon="trash"></b-icon>Eliminar</b-button>
+                  <b-icon icon="trash"></b-icon></b-button>
               </b-row>
               <b-row v-if="editIndex === row.index + 1" class="justify-content-md-center">
                 <b-button pill class="mr-2" size="sm" @click="cancel(row.item)" variant="outline-secondary">
-                  <b-icon icon="x-square"></b-icon>Cancelar</b-button>
+                  <b-icon icon="x-square"></b-icon> Cancelar</b-button>
                 <b-button pill size="sm" @click="save(row.item)" variant="outline-success">
-                  <b-icon icon="check-box"></b-icon>Guardar</b-button>
+                  <b-icon icon="check-box"></b-icon> Guardar</b-button>
               </b-row>
             </template>
 
@@ -133,10 +161,11 @@ export default {
       },
       originalData: null,
       fields: [
-        { key: 'index', label: '#', sortable: false },
-        { key: 'producto', label: 'Producto devuelto', sortable: false },
-        { key: 'cantidad', label: 'Cantidad devuelta', sortable: false },
-        { key: 'actions', label: '' }
+        { key: 'index', label: '#', sortable: false, class: 'text-center' },
+        { key: 'producto', label: 'Producto', sortable: false, class: 'text-center' },
+        { key: 'esEntrega', label: 'ENT / DEV', sortable: false, class: 'text-center' },
+        { key: 'cantidad', label: 'Cantidad', sortable: false, class: 'text-center' },
+        { key: 'actions', label: 'Acciones', class: 'text-center' }
       ],
       editIndex: null,
       listaProductos: []
@@ -145,15 +174,20 @@ export default {
   },
 
   methods: {
-    onSubmit (evt) {
+   async onSubmit (evt) {
       evt.preventDefault()
       if (this.form.itemsEntrega.length === 0) {
         swal('No se han agregado productos.', '', 'error')
       } else {
-        // this.addDevolucionDeCliente(this.form)
-        this.$store.dispatch('ADD_DEVOLUCION', this.form)
-        swal('Devolución de Productos creada exitosamente!', '', 'success').then(
-            this.$router.push({ name: 'ListaEntregaClienteView' })
+        await this.$store.dispatch('ADD_DEVOLUCION', this.form).then(
+            response => {
+                swal('Edición de Entrega exitosa.', '', 'success')
+                this.$store.dispatch('GET_ENTREGAS')
+                this.$router.push({ name: 'ListaEntregaClienteView' })
+            },
+            error => {
+                swal('No se pudo editar la Entrega de Productos.', '', error.toISOString())
+            }
           )
       }
 
@@ -219,7 +253,7 @@ export default {
       this.form.idEntregaCliente = entrega.id
       this.nombrePuntoLimpiezaEntrega = entrega.nombre_punto_limpieza_cliente
       this.nombreClienteEntrega = entrega.nombre_cliente
-      this.fechaEntrega = entrega.fecha_entrega
+      this.fechaEntrega = this.$moment(entrega.fecha_entrega).format("LL");
     }
 
   },
