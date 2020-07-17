@@ -56,11 +56,20 @@
     >
       <template v-slot:cell(actions)="row">
         <b-row class="justify-content-md-center">
-          <b-button pill size="sm" @click="info(row.item, row.index, $event.target)" class="mr-1">
-          <b-icon icon="eye"></b-icon>Ver detalles</b-button>
-        <b-button pill size="sm" variant="outline-danger" @click='deleteFactura(row.item.id)'>
-            <b-icon icon="trash"></b-icon>
-            Eliminar</b-button>
+          <b-button pill 
+                    variant="outline-info"
+                    size="sm" 
+                    @click="info(row.item, row.index, $event.target)" 
+                    class="mr-1">
+            <b-icon icon="fullscreen"></b-icon>
+            Detalle
+          </b-button>
+          <b-button pill 
+                    size="sm" 
+                    variant="outline-danger" 
+                    @click='deleteFactura(row.item.id)'>
+              <b-icon icon="trash"></b-icon>
+          </b-button>
         </b-row>
       </template>
     </b-table>
@@ -243,7 +252,14 @@ export default {
         .then((value) => {
           switch (value) {
             case 'catch':
-              // deleteFacturaCompra(facturaId).then(response => { this.fetchData() })
+              this.$store.dispatch('DELETE_FACTURA_COMPRA', facturaId).then( 
+                response => {
+                  swal('Factura eliminada exitosamente.', '', 'success')
+                },
+                error => {
+                  swal('La factura seleccionada no puede ser eliminada.', '', 'error')
+                }
+              )
               break
           }
         })

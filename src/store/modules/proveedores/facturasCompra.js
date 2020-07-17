@@ -62,6 +62,20 @@ const actions = {
 
   ADD_PRECIO_ITEM_FACTURA_COMPRA: (context, data) => {
     addPrecioHistoricoProducto(data)
+  },
+
+  DELETE_FACTURA_COMPRA: (context, idFacturaCompra) => {
+    return new Promise((resolve, reject) => {
+      deleteFacturaCompra(idFacturaCompra).then(
+        () => {
+          context.commit('DELETE_FACTURA_COMPRA', idFacturaCompra)
+          resolve()
+        }, 
+        (error) => {
+          reject(error)
+        }
+      ) 
+    })
   }
 }
 
@@ -78,8 +92,9 @@ const mutations = {
     })
   },
 
-  DELETE_FACTURA_COMPRA: (state, facturaCompra) => {
-
+  DELETE_FACTURA_COMPRA: (state, idFacturaCompra) => {
+    const objIndex = state.facturasCompra.findIndex(obj => obj.id === idFacturaCompra)
+    state.facturasCompra.splice(objIndex, 1)
   }
 }
 

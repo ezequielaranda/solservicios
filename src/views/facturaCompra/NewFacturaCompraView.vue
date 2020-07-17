@@ -1,39 +1,32 @@
 <template>
 <b-container fluid class="mt-3">
-        <b-breadcrumb class="shadow">
-            <b-breadcrumb-item to="/listaProveedores">
-              <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
-              Proveedores
-            </b-breadcrumb-item>
-            <b-breadcrumb-item to="/listaFacturasCompra">Listado de Facturas de Compra</b-breadcrumb-item>
-            <b-breadcrumb-item active>Nueva Factura de Compra</b-breadcrumb-item>
-        </b-breadcrumb>
+    <b-breadcrumb class="shadow">
+      <b-breadcrumb-item to="/listaProveedores">
+        <b-icon icon="list" scale="1.25" shift-v="1.25" aria-hidden="true"></b-icon>
+        Proveedores
+      </b-breadcrumb-item>
+      <b-breadcrumb-item to="/listaFacturasCompra">Listado de Facturas de Compra</b-breadcrumb-item>
+      <b-breadcrumb-item active>Nueva Factura de Compra</b-breadcrumb-item>
+    </b-breadcrumb>
 
-    <b-form @submit="onSubmit" @reset="onReset" v-if="showForm">
+    <b-form @submit.prevent="onSubmit" @reset="onReset" v-if="showForm">
 
-      <b-form-group id="input-group-3" label="Proveedor:" label-cols-sm="6" label-cols-lg="2">
-            <v-select label="nombre_completo"
-                      :reduce="nombre_completo => nombre_completo.id"
-                      v-model="form.proveedor"
-                      :options="listaProveedores">
-              <div slot="no-options">No se encontraron resultados</div>
-            </v-select>
-            <b-form-invalid-feedback :state="this.stateProveedor()">
-                  Se debe elegir un proveedor de la lista.
-            </b-form-invalid-feedback>
-      </b-form-group>
-
-      <!--b-form-group id="input-group-2" label="Fecha de Factura:" label-for="input-4" label-cols-sm="6" label-cols-lg="2">
-         <date-pick class="datePick"
-             id="input-4"
-             v-model="form.fecha_factura_compra"
-             :format="format"
-         ></date-pick>
-        <b-form-invalid-feedback :state="this.stateFechaFactura()">
-                Elegir una fecha para la Factura.
-         </b-form-invalid-feedback>
-      </b-form-group-->
-      <b-form-group id="input-group-2" label="Fecha de Factura:" label-for="input-4" label-cols-lg="2">
+    <b-row>
+      <b-col cols="5">
+        <b-form-group id="input-group-3" label="Proveedor:" label-cols-sm="6" label-cols-lg="2">
+          <v-select label="nombre_completo"
+                    :reduce="nombre_completo => nombre_completo.id"
+                    v-model="form.proveedor"
+                    :options="listaProveedores">
+            <div slot="no-options">No se encontraron resultados</div>
+          </v-select>
+          <b-form-invalid-feedback :state="this.stateProveedor()">
+                Se debe elegir un proveedor de la lista.
+          </b-form-invalid-feedback>
+        </b-form-group>
+      </b-col>
+      <b-col cols="7">
+        <b-form-group id="input-group-2" label="Fecha de Factura:" label-for="input-4" label-cols-lg="2.5">
           <b-form-datepicker id="input-4"
                              v-model="form.fecha_factura_compra"
                              :state="this.stateFechaFactura()"
@@ -44,6 +37,24 @@
                  Definir una fecha para la Factura.
           </b-form-invalid-feedback>
       </b-form-group>
+      </b-col>
+    </b-row>
+    <b-row>
+      <b-col cols="5">
+        <b-form-group id="input-group-4" label="Estado de Factura:" label-cols-lg="3">
+          <v-select  disabled label="descripcion" :reduce="descripcion => descripcion.id" v-model="form.estado" :options="listaEstadosProducto">
+            <div slot="no-options">No se encontraron resultados</div>
+          </v-select>
+          <b-form-invalid-feedback class="text-left" :state="stateEstadoProducto">
+            Se debe elegir un estado de la lista.
+          </b-form-invalid-feedback>
+        </b-form-group>
+      </b-col>
+    </b-row>
+    
+      
+
+      
 
      <div class="border-top my-3"></div>
 
@@ -244,6 +255,7 @@ export default {
       ],
       showForm: true,
       form: {
+        estado: 7, //en la base de Produccion el estado 7 es BORRADOR. Corregir esta hardcoedada fuerte
         proveedor: null,
         usuario_alta: this.$store.getters.getUserID,
         fecha_factura_compra: '',
@@ -388,11 +400,13 @@ export default {
       return this.tax
         ? this.allSubTotal + (this.allSubTotal * (this.tax / 100))
         : this.allSubTotal
-    }
+    },
+    listaEstadosProducto () { return this.$store.getters.ESTADOS_PRODUCTO }
   },
 
   mounted () {
     this.fetchData()
+
   }
 }
 </script>
